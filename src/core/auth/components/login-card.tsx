@@ -10,6 +10,9 @@ import z from 'zod'
 import { OAuth2Buttons } from './buttons/oauth2-buttons'
 import { EmailInput } from './inputs/email-input'
 import { PasswordInput } from './inputs/password-input'
+import { signInWithPassword } from '..'
+import { toast } from 'sonner'
+import { isFailure } from '@/core/fn/result'
 
 const formSchema = z.object({
   email: z.email(),
@@ -21,8 +24,15 @@ export const LoginCard = ({ className, ...props }: React.ComponentProps<'div'>) 
     resolver: zodResolver(formSchema),
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data)
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const result = await signInWithPassword({ email: data.email, password: data.password })
+
+    if (isFailure(result)) {
+      toast.error(result.error.message)
+    } else {
+      toast.success(`You are successfully logged as ${result.value.email}`)
+    }
+
   }
 
   return (
@@ -56,7 +66,7 @@ export const LoginCard = ({ className, ...props }: React.ComponentProps<'div'>) 
             <div className="flex justify-center pt-6">
               <p className="text-sm text-muted-foreground">
                 Don&apos;t have an account?{' '}
-                <Link href="/auth/signup" className="font-medium text-primary hover:underline">
+                <Link href="/signup" className="font-medium text-primary hover:underline">
                   Sign up
                 </Link>
               </p>

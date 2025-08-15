@@ -1,9 +1,14 @@
+import { Toaster } from '../ui/sonner'
 import { ThemeProvider } from './theme-provider'
+import { QueryProvider } from './query-provider'
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-      {children}
-    </ThemeProvider>
+    <QueryProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        {children}
+        <Toaster />
+      </ThemeProvider>
+    </QueryProvider>
   )
 }

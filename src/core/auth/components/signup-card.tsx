@@ -16,6 +16,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { signUp } from '..'
+import { isFailure } from '@/core/fn/result'
+import { toast } from 'sonner'
+import { isNone } from '@/core/fn/maybe'
 
 const formSchema = z.object({
   username: z.string().min(3).max(20),
@@ -50,8 +54,22 @@ export const SignupCard = ({ className, ...props }: React.ComponentProps<'div'>)
     resolver: zodResolver(formSchema),
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data)
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const result = await signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          username: data.username,
+        },
+      },
+    })
+
+    if (isFailure(result)) {
+      toast.error(result.error.message)
+    } else {
+      toast.success(`You are successfully signed up ${isNone(result.value) ? 'as guest' : 'as ' + result.value.value.user_metadata.username}`)
+    }
   }
 
   return (

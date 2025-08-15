@@ -38,12 +38,18 @@ export const signUp = mutation({
   args: z.object({
     email: z.email(),
     password: z.string(),
+    options: z.object({
+      data: z.object({
+        username: z.string(),
+      }),
+    }),
   }),
-  handler: async ({ email, password }): Promise<Result<Maybe<User>, AuthError>> => {
+  handler: async ({ email, password, options }): Promise<Result<Maybe<User>, AuthError>> => {
     const supabase = await createClient()
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options,
     })
 
     if (error) return failure(error)
