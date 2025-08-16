@@ -33,7 +33,7 @@ jobs:
           pnpm exec biome check \
             --no-errors-on-unmatched \
             --files-ignore-unknown=true \
-            --colors=always \
+            --colors=on \
             .
           echo "::endgroup::"
 
