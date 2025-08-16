@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # nécessaire pour git diff
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -24,24 +22,15 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9 # adapte si tu utilises une autre version
+          version: 9 # adapte si besoin
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Get changed files
-        id: changes
-        run: |
-          echo "CHANGED_FILES=$(git diff --name-only ${{ github.base_ref || 'HEAD^' }}...${{ github.sha }} \
-            | grep -E '\.(js|ts|cjs|mjs|cts|mts|jsx|tsx|json|jsonc)$' || true)" >> $GITHUB_ENV
-
       - name: Run Biome check
-        if: env.CHANGED_FILES != ''
         run: |
-          echo "Running Biome on changed files:"
-          echo "$CHANGED_FILES"
           pnpm exec biome check \
             --no-errors-on-unmatched \
             --files-ignore-unknown=true \
             --colors=off \
-            $CHANGED_FILES
+            .
