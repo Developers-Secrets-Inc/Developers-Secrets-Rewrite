@@ -1,6 +1,7 @@
 import 'server-only'
 
-import z, { ZodType } from 'zod'
+import type z from 'zod'
+import type { ZodType } from 'zod'
 
 
 export const query = <Schema extends ZodType, T>(config: {

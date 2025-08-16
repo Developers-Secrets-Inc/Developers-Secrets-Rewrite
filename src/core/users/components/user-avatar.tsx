@@ -1,4 +1,4 @@
-import { User } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,

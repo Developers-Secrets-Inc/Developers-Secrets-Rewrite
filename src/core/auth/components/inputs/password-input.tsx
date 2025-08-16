@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { Eye, EyeOff, Lock } from 'lucide-react'
@@ -43,7 +44,9 @@ export function PasswordInput({ control: controlProp }: PasswordInputProps) {
                 {...field}
               />
               <Button
+                type="button"
                 onClick={togglePasswordVisibility}
+                onMouseDown={(e) => e.preventDefault()}
                 variant="ghost"
                 className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}

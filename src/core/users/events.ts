@@ -2,7 +2,7 @@
 
 import 'server-only'
 
-import { EventMap } from '../events/types'
+import type { EventMap } from '../events/types'
 import { register } from '../events/bus'
 
 export const onUserCreated = async (payload: EventMap['user.created']) => {

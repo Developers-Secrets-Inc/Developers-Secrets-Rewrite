@@ -5,9 +5,9 @@ import 'server-only'
 import { createClient } from '@/utils/supabase/server'
 import { mutation, query } from '../fn'
 import z from 'zod'
-import { success, failure, Result } from '../fn/result'
-import { AuthError, User } from '@supabase/supabase-js'
-import { Maybe, none, some } from '../fn/maybe'
+import { success, failure, type Result } from '../fn/result'
+import type { AuthError, User } from '@supabase/supabase-js'
+import { type Maybe, none, some } from '../fn/maybe'
 
 export const getUser = query({
   handler: async (): Promise<Result<User, AuthError>> => {

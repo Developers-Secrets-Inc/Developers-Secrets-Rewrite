@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="flex min-h-dvh flex-col">
       <AppHeader />
-      <main className="flex min-h-0 min-w-0 flex-col overflow-auto">
+      <main className="flex-1 min-h-0 min-w-0 flex flex-col overflow-auto">
         <TwoColumnsLayout.Root className="h-full w-full">
           <TwoColumnsLayout.Left>{children}</TwoColumnsLayout.Left>
           <TwoColumnsLayout.Separator />
@@ -19,12 +19,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 cx={1}
                 cy={1}
                 cr={1}
-                className={cn('[mask-image:linear-gradient(to_bottom_left,white,transparent)] ')}
+                className={cn('[mask-image:linear-gradient(to_bottom_left,white,transparent)]')}
               />
             </div>
           </TwoColumnsLayout.Right>
         </TwoColumnsLayout.Root>
       </main>
-    </>
+    </div>
   )
 }
