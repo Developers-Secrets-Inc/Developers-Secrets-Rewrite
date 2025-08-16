@@ -19,7 +19,7 @@ const generateNonce = async (): Promise<string[]> => {
   return [nonce, hashedNonce]
 }
 
-const OneTapComponent = () => {
+export const OneTapComponent = () => {
   const supabase = createClient()
   const router = useRouter()
 
@@ -69,5 +69,3 @@ const OneTapComponent = () => {
 
   return <Script onReady={initializeGoogleOneTap} src="https://accounts.google.com/gsi/client" />
 }
-
-export default OneTapComponent
