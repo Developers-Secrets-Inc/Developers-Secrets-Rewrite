@@ -33,7 +33,7 @@ jobs:
           pnpm exec biome check \
             --no-errors-on-unmatched \
             --files-ignore-unknown=true \
-            --colors=on \
+            --colors=force \
             .
           echo "::endgroup::"
 
@@ -43,7 +43,7 @@ jobs:
             --no-errors-on-unmatched \
             --files-ignore-unknown=true \
             --colors=off \
-            --json . > biome-report.json || true
+            --reporter=json . > biome-report.json || true
 
       - name: Upload Biome report
         uses: actions/upload-artifact@v4
