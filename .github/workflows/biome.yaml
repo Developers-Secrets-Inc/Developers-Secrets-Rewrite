@@ -4,7 +4,12 @@ on:
   push:
     branches:
       - "**"
+  # Déclencher spécifiquement sur les pull requests pour pouvoir commenter
   pull_request:
+
+# Donner les permissions au workflow pour écrire dans les pull requests
+permissions:
+  pull-requests: write
 
 jobs:
   biome:
@@ -27,26 +32,54 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run Biome check (logs)
+      # Étape 1: Exécuter Biome et capturer la sortie dans une variable d'environnement
+      - name: Run Biome check and capture output
+        id: biome_check # On donne un ID à l'étape pour réutiliser sa sortie
         run: |
-          echo "::group::Biome Check Results"
-          pnpm exec biome check \
-            --no-errors-on-unmatched \
-            --files-ignore-unknown=true \
-            --colors=force \
-            .
-          echo "::endgroup::"
+          # Exécute biome et stocke la sortie dans une variable
+          # `|| true` à la fin empêche le workflow de s'arrêter si Biome trouve des erreurs
+          BIOME_OUTPUT=$(pnpm exec biome check --colors=force --no-errors-on-unmatched --files-ignore-unknown=true .) || true
+          
+          # Utilise une syntaxe spéciale pour exposer la variable à d'autres étapes
+          echo "output<<EOF" >> $GITHUB_OUTPUT
+          echo "$BIOME_OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # On vérifie si la commande a échoué pour faire échouer le job plus tard si besoin
+          if [[ $? -ne 0 ]]; then
+            echo "Biome check failed."
+            echo "status=failure" >> $GITHUB_OUTPUT
+          else
+            echo "Biome check passed."
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Run Biome check (JSON output)
-        run: |
-          pnpm exec biome check \
-            --no-errors-on-unmatched \
-            --files-ignore-unknown=true \
-            --colors=off \
-            --reporter=json . > biome-report.json || true
 
-      - name: Upload Biome report
-        uses: actions/upload-artifact@v4
+      # Étape 2: Publier le commentaire sur la Pull Request
+      - name: Post Biome results to PR
+        # Ne s'exécute que sur les événements de type pull_request
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          name: biome-report
-          path: biome-report.json
+          # Le message à publier. On utilise la sortie de l'étape précédente.
+          message: |
+            ### 📝 Biome Check Results
+
+            <details>
+            <summary>Click to expand</summary>
+
+            ```
+            ${{ steps.biome_check.outputs.output }}
+            ```
+
+            </details>
+
+          # Le token pour s'authentifier auprès de l'API GitHub
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Étape 3: Faire échouer le workflow si Biome a trouvé des erreurs
+      - name: Fail workflow if Biome check failed
+        if: steps.biome_check.outputs.status == 'failure'
+        run: |
+          echo "Biome check failed. See the comment above for details."
+          exit 1
