@@ -22,15 +22,31 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9 # adapte si besoin
+          version: 9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run Biome check
+      - name: Run Biome check (logs)
+        run: |
+          echo "::group::Biome Check Results"
+          pnpm exec biome check \
+            --no-errors-on-unmatched \
+            --files-ignore-unknown=true \
+            --colors=always \
+            .
+          echo "::endgroup::"
+
+      - name: Run Biome check (JSON output)
         run: |
           pnpm exec biome check \
             --no-errors-on-unmatched \
             --files-ignore-unknown=true \
             --colors=off \
-            .
+            --json . > biome-report.json || true
+
+      - name: Upload Biome report
+        uses: actions/upload-artifact@v4
+        with:
+          name: biome-report
+          path: biome-report.json
