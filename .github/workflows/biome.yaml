@@ -1,23 +1,23 @@
-name: Biome Check
+name: Biome Check & Comment (Changed Files)
 
 on:
   push:
     branches:
-      - "**"
-  # Déclencher spécifiquement sur les pull requests pour pouvoir commenter
+      - "main"
   pull_request:
 
-# Donner les permissions au workflow pour écrire dans les pull requests
 permissions:
   pull-requests: write
 
 jobs:
-  biome:
+  biome-check:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,54 +32,51 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Étape 1: Exécuter Biome et capturer la sortie dans une variable d'environnement
       - name: Run Biome check and capture output
-        id: biome_check # On donne un ID à l'étape pour réutiliser sa sortie
+        id: biome_check
         run: |
-          # Exécute biome et stocke la sortie dans une variable
-          # `|| true` à la fin empêche le workflow de s'arrêter si Biome trouve des erreurs
-          BIOME_OUTPUT=$(pnpm exec biome check --colors=force --no-errors-on-unmatched --files-ignore-unknown=true .) || true
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "Running Biome on changed files since ${{ github.event.pull_request.base.ref }}..."
+            BIOME_COMMAND="pnpm exec biome check --changed --since=${{ github.event.pull_request.base.ref }}"
+          else
+            echo "Running Biome on all files..."
+            BIOME_COMMAND="pnpm exec biome check"
+          fi
           
-          # Utilise une syntaxe spéciale pour exposer la variable à d'autres étapes
+          BIOME_OPTIONS="--max-diagnostics=none --no-errors-on-unmatched --files-ignore-unknown=true"
+          
+          BIOME_OUTPUT=$($BIOME_COMMAND $BIOME_OPTIONS) || true
+          COMMAND_STATUS=$?
+          
           echo "output<<EOF" >> $GITHUB_OUTPUT
           echo "$BIOME_OUTPUT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
-          # On vérifie si la commande a échoué pour faire échouer le job plus tard si besoin
-          if [[ $? -ne 0 ]]; then
-            echo "Biome check failed."
+          if [[ $COMMAND_STATUS -ne 0 ]]; then
             echo "status=failure" >> $GITHUB_OUTPUT
           else
-            echo "Biome check passed."
             echo "status=success" >> $GITHUB_OUTPUT
           fi
 
-
-      # Étape 2: Publier le commentaire sur la Pull Request
       - name: Post Biome results to PR
-        # Ne s'exécute que sur les événements de type pull_request
         if: github.event_name == 'pull_request'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          # Le message à publier. On utilise la sortie de l'étape précédente.
           message: |
-            ### 📝 Biome Check Results
+            ### 📝 Biome Check Results (Changed Files)
 
             <details>
-            <summary>Click to expand</summary>
+            <summary>Click to expand for details</summary>
 
-            ```
+            ```text
             ${{ steps.biome_check.outputs.output }}
             ```
 
             </details>
-
-          # Le token pour s'authentifier auprès de l'API GitHub
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      
-      # Étape 3: Faire échouer le workflow si Biome a trouvé des erreurs
+
       - name: Fail workflow if Biome check failed
         if: steps.biome_check.outputs.status == 'failure'
         run: |
-          echo "Biome check failed. See the comment above for details."
+          echo "Biome check failed. See the comment above for the full report."
           exit 1
