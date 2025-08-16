@@ -20,6 +20,12 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
+const getAvatarUrl = (user: User) => {
+  return user.user_metadata.avatar_url
+    ? user.user_metadata.avatar_url
+    : user.user_metadata.picture || `https://avatar.vercel.sh/${user.user_metadata.username}`
+}
+
 export const UserAvatar = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
@@ -27,7 +33,7 @@ export const UserAvatar = ({ user }: { user: User }) => {
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
             <AvatarImage
-              src={`https://avatar.vercel.sh/${user.user_metadata.username}`}
+              src={getAvatarUrl(user)}
               alt="Profile image"
             />
             <AvatarFallback>{user.user_metadata.username[0]}</AvatarFallback>

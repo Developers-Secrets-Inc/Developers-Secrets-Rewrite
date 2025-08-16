@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/server'
 import { mutation, query } from '../fn'
 import z from 'zod'
 import { success, failure, type Result } from '../fn/result'
-import type { AuthError, User } from '@supabase/supabase-js'
+import type { AuthError, Provider, User } from '@supabase/supabase-js'
 import { type Maybe, none, some } from '../fn/maybe'
 
 export const getUser = query({
@@ -84,5 +84,37 @@ export const signOut = mutation({
     if (error) return failure(error)
 
     return success(null)
+  },
+})
+
+export const signInWithGoogle = mutation({
+  handler: async (): Promise<Result<{ provider: Provider; url: string }, AuthError>> => {
+    const supabase = await createClient()
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'http://localhost:3000/api/auth/callback',
+      },
+    })
+
+    if (error) return failure(error)
+
+    return success(data)
+  },
+})
+
+export const signInWithGithub = mutation({
+  handler: async (): Promise<Result<{ provider: Provider; url: string }, AuthError>> => {
+    const supabase = await createClient()
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: 'http://localhost:3000/api/auth/callback',
+      },
+    })
+
+    if (error) return failure(error)
+
+    return success(data)
   },
 })
