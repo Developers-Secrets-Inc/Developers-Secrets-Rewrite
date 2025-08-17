@@ -43,6 +43,9 @@ export const getBlogPostPage = query({
       _status: {
         equals: 'published',
       },
+      category: {
+        not_equals: 'changelog',
+      },
     }
 
     if (category) {
