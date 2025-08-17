@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import { Eclipse, Github, Linkedin, Twitter, Youtube } from 'lucide-react'
 
 const sections = [
@@ -49,24 +50,9 @@ const sections = [
   },
 ]
 
-interface Footer7Props {
-  logo?: {
-    url: string
-    src: string
-    alt: string
-    title: string
-  }
-}
-const Footer = ({
-  logo = {
-    url: '/',
-    src: '/your-logo.svg',
-    alt: 'Developers Secrets',
-    title: 'Developers Secrets',
-  },
-}: Footer7Props) => {
+const Footer = ({ className }: { className?: string }) => {
   return (
-    <section className="pt-32 pb-8 w-full flex">
+    <section className={cn("pt-32 pb-8 w-full flex", className)}>
       <div className="w-full max-w-7xl mx-auto">
         <div className="flex w-full flex-col items-center justify-between gap-10 text-center lg:flex-row lg:items-start lg:text-left">
           <div className="grid flex-1 w-full grid-cols-5 gap-6 lg:gap-20">
