@@ -20,7 +20,7 @@ export const Admins: CollectionConfig = {
     {
       name: 'avatarUrl',
       type: 'text',
-      required: false
+      required: true
     }
   ],
 }

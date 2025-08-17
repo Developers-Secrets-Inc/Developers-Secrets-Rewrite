@@ -4,7 +4,7 @@ import { match } from '@/core/fn/result'
 import { useUser } from '@/core/auth/hooks/use-user'
 import { AuthButtons } from './auth-buttons'
 import { Skeleton } from '@/components/ui/skeleton'
-import { UserAvatar } from '@/core/users/components/user-avatar'
+import { UserMenu } from '@/core/users/components/user-menu'
 import { DashboardButton } from './dashboard-button'
 
 const AuthButtonsSkeleton = () => {
@@ -23,7 +23,7 @@ export const AuthButtonsClient = () => {
       return (
         <>
           <DashboardButton />
-          <UserAvatar user={user} />
+          <UserMenu user={user} />
         </>
       )
     },

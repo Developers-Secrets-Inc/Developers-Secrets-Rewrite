@@ -123,7 +123,7 @@ export interface Admin {
   id: number;
   name: string;
   supabaseId: string;
-  avatarUrl?: string | null;
+  avatarUrl: string;
   updatedAt: string;
   createdAt: string;
   email: string;

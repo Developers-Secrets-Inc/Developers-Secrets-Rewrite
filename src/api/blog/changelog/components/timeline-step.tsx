@@ -26,8 +26,8 @@ export function TimelineStep({ index, post, isFirst, isLast }: TimelineStepProps
   return (
     <div className="flex w-full flex-col items-center justify-between min-[960px]:flex-row min-[960px]:gap-10">
       <div className="ml-auto flex gap-4 min-[960px]:max-w-2xl min-[960px]:py-4">
-        <div className="flex w-24 items-center justify-end">
-          <span className="text-sm text-muted-foreground whitespace-nowrap">{displayDate}</span>
+        <div className="flex w-24 items-start justify-end">
+          <span className="inline-flex h-5 items-center text-sm leading-none text-muted-foreground whitespace-nowrap">{displayDate}</span>
         </div>
         <div className="relative grid grid-cols-[2.5rem_1fr] min-[960px]:gap-4">
           <div className={spineClass}>
