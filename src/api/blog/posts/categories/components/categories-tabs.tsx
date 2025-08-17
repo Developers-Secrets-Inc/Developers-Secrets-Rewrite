@@ -6,53 +6,41 @@ import type { BlogPost } from '@/payload-types'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export type BlogPostCategory = NonNullable<BlogPost['category']>
+export type BlogPostCategory = NonNullable<BlogPost['category']> | 'all'
 
-export const categories: ReadonlyArray<{ label: string; value: BlogPostCategory }> = [
-  { label: 'Engineering', value: 'engineering' },
-  { label: 'Community', value: 'community' },
-  { label: 'Company News', value: 'company-news' },
-  { label: 'Customers', value: 'customers' },
-  { label: 'Changelog', value: 'changelog' },
+export const categories: ReadonlyArray<{ label: string; value: BlogPostCategory; href: string }> = [
+  { label: 'All posts', value: 'all', href: '/blog' },
+  { label: 'Engineering', value: 'engineering', href: '/blog/category/engineering' },
+  { label: 'Community', value: 'community', href: '/blog/category/community' },
+  { label: 'Company News', value: 'company-news', href: '/blog/category/company-news' },
+  { label: 'Customers', value: 'customers', href: '/blog/category/customers' },
+  { label: 'Changelog', value: 'changelog', href: '/changelog' },
 ] as const
 
 export const CategoriesTabs = () => {
   const pathname = usePathname()
-  const isCurrent = (category: BlogPostCategory) =>
-    category === 'changelog' ? pathname === '/changelog' : pathname === `/blog/category/${category}`
-  const isAll = pathname === '/blog'
+  const isCurrent = (category: BlogPostCategory) => {
+    if (category === 'all') return pathname === '/blog'
+    if (category === 'changelog') return pathname === '/changelog'
+    return pathname === `/blog/category/${category}`
+  }
 
   return (
     <div className="flex flex-wrap gap-2 py-8">
-      <Button
-        variant={isAll ? 'default' : 'ghost'}
-        className={cn(
-          'rounded-full',
-          isAll ? 'border bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 hover:text-primary' : '',
-        )}
-        size="sm"
-        asChild
-      >
-        <Link href="/blog">All posts</Link>
-      </Button>
       {categories.map((category) => (
         <Button
           key={category.value}
           variant={isCurrent(category.value) ? 'default' : 'ghost'}
           className={cn(
             'rounded-full',
-            isCurrent(category.value) ? 'border bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 hover:text-primary' : '',
+            isCurrent(category.value)
+              ? 'border bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 hover:text-primary'
+              : '',
           )}
           size="sm"
           asChild
         >
-          <Link
-            href={
-              category.value === 'changelog' ? '/changelog' : `/blog/category/${category.value}`
-            }
-          >
-            {category.label}
-          </Link>
+          <Link href={category.href}>{category.label}</Link>
         </Button>
       ))}
     </div>

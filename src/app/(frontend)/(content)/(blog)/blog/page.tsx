@@ -4,7 +4,7 @@ import { TopBlogPosts } from '@/api/blog/posts/components/top-blog-posts'
 
 export default function Page() {
   return (
-    <div className="mt-24">
+    <div className="mt-16">
       <CategoriesTabs />
       <TopBlogPosts />
       <LatestNews />
