@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 const LoginButton = () => {
   return (
@@ -21,7 +22,7 @@ const RegisterButton = () => {
 
 export const AuthButtons = ({ className }: { className?: string }) => {
   return (
-    <div className={className}>
+    <div className={cn('flex items-center gap-2', className)}>
       <LoginButton />
       <RegisterButton />
     </div>
