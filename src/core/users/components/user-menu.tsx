@@ -26,7 +26,7 @@ export const UserMenu = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
+        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-transparent">
           <UserAvatar user={user} />
         </Button>
       </DropdownMenuTrigger>

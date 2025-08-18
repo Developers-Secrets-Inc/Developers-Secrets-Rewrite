@@ -6,6 +6,7 @@ import { AuthButtons } from './auth-buttons'
 import { Skeleton } from '@/components/ui/skeleton'
 import { UserMenu } from '@/core/users/components/user-menu'
 import { DashboardButton } from './dashboard-button'
+import { cn } from '@/lib/utils'
 
 const AuthButtonsSkeleton = () => {
   return <Skeleton className="h-8 w-8 rounded-full" />
@@ -21,7 +22,7 @@ export const AuthButtonsClient = ({ className }: { className?: string }) => {
     user,
     (user) => {
       return (
-        <div className={className}>
+        <div className={cn('flex items-center gap-2', className)}>
           <DashboardButton />
           <UserMenu user={user} />
         </div>

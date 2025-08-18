@@ -70,6 +70,7 @@ export interface Config {
     admins: Admin;
     media: Media;
     'blog-posts': BlogPost;
+    tutorials: Tutorial;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     admins: AdminsSelect<false> | AdminsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
+    tutorials: TutorialsSelect<false> | TutorialsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -199,6 +201,65 @@ export interface BlogPost {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutorials".
+ */
+export interface Tutorial {
+  id: number;
+  title: string;
+  /**
+   * Will be auto-generated if left empty.
+   */
+  slug: string;
+  /**
+   * A brief description of the tutorial that will be displayed in lists.
+   */
+  excerpt: string;
+  /**
+   * Tutorial difficulty level
+   */
+  difficulty?: ('beginner' | 'intermediate' | 'advanced') | null;
+  /**
+   * Estimated reading time in minutes
+   */
+  readingTime?: number | null;
+  /**
+   * Publication date of the tutorial
+   */
+  publishedAt?: string | null;
+  seo?: {
+    meta?: {
+      /**
+       * Title for search engines (50-60 characters)
+       */
+      title?: string | null;
+      /**
+       * Description for search engines (120-160 characters)
+       */
+      description?: string | null;
+      /**
+       * Comma-separated keywords for SEO (e.g., python, tutorial, web development)
+       */
+      keywords?: string | null;
+      /**
+       * Image for social sharing (1200x630px recommended)
+       */
+      image?: (number | null) | Media;
+      /**
+       * Canonical URL (if different from default)
+       */
+      canonicalUrl?: string | null;
+    };
+    /**
+     * Custom JSON-LD structured data (optional)
+     */
+    structuredData?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -215,6 +276,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'blog-posts';
         value: number | BlogPost;
+      } | null)
+    | ({
+        relationTo: 'tutorials';
+        value: number | Tutorial;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -313,6 +378,35 @@ export interface BlogPostsSelect<T extends boolean = true> {
   category?: T;
   content?: T;
   publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tutorials_select".
+ */
+export interface TutorialsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  difficulty?: T;
+  readingTime?: T;
+  publishedAt?: T;
+  seo?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              keywords?: T;
+              image?: T;
+              canonicalUrl?: T;
+            };
+        structuredData?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
