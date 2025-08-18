@@ -11,7 +11,7 @@ const AuthButtonsSkeleton = () => {
   return <Skeleton className="h-8 w-8 rounded-full" />
 }
 
-export const AuthButtonsClient = () => {
+export const AuthButtonsClient = ({ className }: { className?: string }) => {
   const { data: user, isLoading } = useUser()
 
   if (isLoading) return <AuthButtonsSkeleton />
@@ -21,12 +21,12 @@ export const AuthButtonsClient = () => {
     user,
     (user) => {
       return (
-        <>
+        <div className={className}>
           <DashboardButton />
           <UserMenu user={user} />
-        </>
+        </div>
       )
     },
-    () => <AuthButtons />,
+    () => <AuthButtons className={className} />,
   )
 }

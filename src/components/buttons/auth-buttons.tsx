@@ -19,11 +19,11 @@ const RegisterButton = () => {
   )
 }
 
-export const AuthButtons = () => {
+export const AuthButtons = ({ className }: { className?: string }) => {
   return (
-    <>
+    <div className={className}>
       <LoginButton />
       <RegisterButton />
-    </>
+    </div>
   )
 }
