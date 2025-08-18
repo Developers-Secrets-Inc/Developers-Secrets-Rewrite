@@ -52,9 +52,9 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ]
 
-export const AppNavigation = () => {
+export const AppNavigation = ({ className }: { className?: string }) => {
   return (
-    <NavigationMenu viewport={false}>
+    <NavigationMenu viewport={false} className={className}>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="text-muted-foreground">Articles</NavigationMenuTrigger>

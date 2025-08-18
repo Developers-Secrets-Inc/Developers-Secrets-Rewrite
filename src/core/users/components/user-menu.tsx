@@ -1,5 +1,5 @@
 import type { User } from '@supabase/supabase-js'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/core/auth/components/user-avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,24 +20,14 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-const getAvatarUrl = (user: User) => {
-  return user.user_metadata.avatar_url
-    ? user.user_metadata.avatar_url
-    : user.user_metadata.picture || `https://avatar.vercel.sh/${user.user_metadata.username}`
-}
 
-export const UserAvatar = ({ user }: { user: User }) => {
+
+export const UserMenu = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
-          <Avatar>
-            <AvatarImage
-              src={getAvatarUrl(user)}
-              alt="Profile image"
-            />
-            <AvatarFallback>{user.user_metadata.username[0]}</AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64">

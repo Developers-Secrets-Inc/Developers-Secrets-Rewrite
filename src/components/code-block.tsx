@@ -1,11 +1,10 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { Check, Copy } from 'lucide-react'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { codeToHtml } from 'shiki'
-import { Copy, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 
 export type CodeBlockProps = {
   children?: React.ReactNode
@@ -109,4 +108,4 @@ function CodeBlockGroup({ children, className, ...props }: CodeBlockGroupProps) 
   )
 }
 
-export { CodeBlockGroup, CodeBlockCode, CodeBlock }
+export { CodeBlock, CodeBlockCode, CodeBlockGroup }
