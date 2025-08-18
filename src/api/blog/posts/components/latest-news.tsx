@@ -77,7 +77,7 @@ const BlogPostsGrid = ({ posts }: { posts: BlogPost[] }) => {
 
 const SeeMoreButton = () => {
   return (
-    <Button variant="outline" className="rounded-full cursor-pointer w-full max-w-2xl mx-auto">
+    <Button variant="outline" className="rounded-full cursor-pointer w-full max-w-2xl mx-auto px-2">
       Show more posts
     </Button>
   )
