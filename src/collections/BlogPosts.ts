@@ -87,6 +87,60 @@ export const BlogPosts: CollectionConfig = {
                   },
                 ],
               },
+              {
+                slug: 'Alert',
+                fields: [
+                  {
+                    name: 'variant',
+                    type: 'select',
+                    options: [
+                      { label: 'Default', value: 'default' },
+                      { label: 'Destructive', value: 'destructive' },
+                    ],
+                    defaultValue: 'default',
+                    required: true,
+                    admin: { description: 'Choose the visual style of the alert.' },
+                  },
+                  {
+                    name: 'content',
+                    type: 'text',
+                    required: true,
+                    admin: { description: 'Alert message content.' },
+                  },
+                ],
+              },
+              {
+                slug: 'CTA',
+                fields: [
+                  {
+                    name: 'title',
+                    type: 'text',
+                    required: true,
+                  },
+                  {
+                    name: 'description',
+                    type: 'text',
+                    admin: { description: 'Optional supporting text.' },
+                  },
+                  {
+                    name: 'buttonLabel',
+                    type: 'text',
+                    required: true,
+                  },
+                  {
+                    name: 'href',
+                    type: 'text',
+                    required: true,
+                    admin: { description: 'Relative path (/pricing) or full URL (https://...).' },
+                  },
+                  {
+                    name: 'newTab',
+                    type: 'checkbox',
+                    label: 'Open in new tab?',
+                    defaultValue: false,
+                  },
+                ],
+              },
             ],
             inlineBlocks: [],
           }),

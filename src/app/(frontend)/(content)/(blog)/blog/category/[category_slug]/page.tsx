@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: Promise<{ category_slug
   return (
     <div className="mt-16">
       <CategoriesTabs />
-      <TopBlogPosts />
+      <TopBlogPosts category={category_slug} />
       <LatestNews category={category_slug} />
     </div>
   )

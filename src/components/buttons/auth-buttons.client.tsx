@@ -4,6 +4,7 @@ import { match } from '@/core/fn/result'
 import { useUser } from '@/core/auth/hooks/use-user'
 import { AuthButtons } from './auth-buttons'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 import { UserMenu } from '@/core/users/components/user-menu'
 import { DashboardButton } from './dashboard-button'
 
@@ -21,7 +22,7 @@ export const AuthButtonsClient = ({ className }: { className?: string }) => {
     user,
     (user) => {
       return (
-        <div className={className}>
+        <div className={cn('flex items-center gap-2', className)}>
           <DashboardButton />
           <UserMenu user={user} />
         </div>

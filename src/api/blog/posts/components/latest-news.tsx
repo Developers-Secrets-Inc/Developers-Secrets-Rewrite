@@ -5,7 +5,6 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 import { Admin, BlogPost } from '@/payload-types'
 import Link from 'next/link'
 import { getBlogPostPage } from '..'
-import { Cross } from '@/components/icons/cross'
 
 const BlogPostCard = async ({ post }: { post: BlogPost }) => {
   const categoryLabelMap = {
@@ -28,6 +27,7 @@ const BlogPostCard = async ({ post }: { post: BlogPost }) => {
     : undefined
 
   const avatarSrc: string | undefined = (post.author as Admin)?.avatarUrl ?? undefined
+  const author = post.author as Admin
 
   return (
     <Link href={`/blog/${post.slug}`}>
@@ -54,10 +54,10 @@ const BlogPostCard = async ({ post }: { post: BlogPost }) => {
         <CardFooter className="flex items-center gap-2 group-hover:text-primary-foreground transition-colors">
           <Avatar className="size-6">
             <AvatarImage src={avatarSrc} />
-            <AvatarFallback>{post.author.name[0]}</AvatarFallback>
+            <AvatarFallback>{author.name[0]}</AvatarFallback>
           </Avatar>
           <span className="text-sm text-muted-foreground group-hover:text-primary-foreground transition-colors">
-            {post.author.name}
+            {author.name}
           </span>
         </CardFooter>
       </Card>
@@ -88,7 +88,6 @@ export const LatestNews = async ({ category }: { category?: string }) => {
 
   return (
     <div className="relative max-w-5xl mx-auto border border-border flex flex-col gap-4 pb-8">
-      <Cross className="absolute left-0 top-0 -translate-y-1/2 -translate-x-1/2 z-0" />
 
       <BlogPostsGrid posts={posts.docs} />
       <SeeMoreButton />

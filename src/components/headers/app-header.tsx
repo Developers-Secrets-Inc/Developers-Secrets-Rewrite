@@ -12,7 +12,7 @@ export const AppHeader = () => {
         <AppNavigation className="hidden md:block" />
       </Header.Left>
       <Header.Right>
-        <AuthButtonsClient className="hidden md:block" />
+        <AuthButtonsClient className="hidden md:flex" />
         <UserSheet className="md:hidden" />
       </Header.Right>
     </Header.Root>

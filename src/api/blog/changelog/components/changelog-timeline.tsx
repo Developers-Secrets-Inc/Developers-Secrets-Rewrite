@@ -1,6 +1,15 @@
 import { Cross } from '@/components/icons/cross'
 import { TimelineStep } from './timeline-step'
 import { getChangelogPage } from '../'
+import { Button } from '@/components/ui/button'
+
+export const SeeMoreButton = () => {
+  return (
+    <Button variant="outline" className="rounded-full cursor-pointer w-full max-w-2xl mx-auto px-2">
+      See more
+    </Button>
+  )
+}
 
 export const ChangelogTimeline = async () => {
   const changelog = await getChangelogPage()
@@ -14,6 +23,7 @@ export const ChangelogTimeline = async () => {
         const isLast = i === changelog.docs.length - 1
         return <TimelineStep key={s.title} index={i} post={s} isFirst={isFirst} isLast={isLast} />
       })}
+      <SeeMoreButton />
     </div>
   )
 }
