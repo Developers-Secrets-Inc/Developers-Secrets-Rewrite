@@ -11,17 +11,17 @@ export const ExplorerContextMenu = ({
   onClick,
 }: {
   children: React.ReactNode
-  onClick: () => void
+  onClick: (type: 'file' | 'folder', parentId: string) => void
 }) => {
   return (
     <ContextMenu>
       <ContextMenuTrigger className="h-full w-full">{children}</ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem onClick={() => onClick()}>
+        <ContextMenuItem onClick={() => onClick('file', 'root')}>
           <FilePlus className="mr-2 h-4 w-4" />
           <span>New File</span>
         </ContextMenuItem>
-        <ContextMenuItem onClick={() => onClick()}>
+        <ContextMenuItem onClick={() => onClick('folder', 'root')}>
           <FolderPlus className="mr-2 h-4 w-4" />
           <span>New Folder</span>
         </ContextMenuItem>

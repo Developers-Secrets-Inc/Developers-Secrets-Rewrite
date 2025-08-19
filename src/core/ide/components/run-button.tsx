@@ -4,13 +4,20 @@ import { Button } from '@/components/ui/button'
 import { Loader2, Play } from 'lucide-react'
 import { useCompile } from '@/core/compiler/client/react/hooks/use-compile'
 import { useIDEStore } from '@/core/ide/store/use-ide-store'
+import { transformFileTreeToExecutionStructure } from '../utils'
 
 export const RunButton = () => {
-  const { compile, isLoading } = useCompile()
-  const { setCompilationResult } = useIDEStore()
+  const { compileFileStructure, isLoading } = useCompile()
+  const { setCompilationResult, fileTree } = useIDEStore()
 
   const handleClick = async () => {
-    const compileResult = await compile({ code: 'print("Hello World")', language: 'python' })
+    const executionStructure = transformFileTreeToExecutionStructure(fileTree)
+
+    const compileResult = await compileFileStructure({
+      files: executionStructure.files,
+      mainFile: executionStructure.mainFile!,
+    })
+
     console.log(compileResult)
     setCompilationResult(compileResult)
   }

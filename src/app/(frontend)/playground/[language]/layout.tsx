@@ -1,4 +1,5 @@
 import { AppHeader } from '@/components/headers/app-header'
+import { PlaygroundSidebar } from './components/playground-sidebar'
 
 export default async function Layout({
   children,
@@ -12,7 +13,12 @@ export default async function Layout({
   return (
     <div className="h-screen flex flex-col min-h-0">
       <AppHeader />
-      <div className="flex-1 min-h-0">{children}</div>
+      <div className="flex-1 min-h-0 flex">
+        <PlaygroundSidebar language={language}/>
+        <div className="flex-1 min-w-0 overflow-auto">
+          {children}
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,7 +1,8 @@
 import { CompilationResult, Language } from '../types'
 import { createJavaScriptWorker } from './javascript'
 import { createTypeScriptWorker } from './typescript'
-import { compilePython } from './python'
+import { compilePython, compilePythonFileStructure } from './python'
+import { File } from './types'
 
 export const compile = async (code: string, language: Language): Promise<CompilationResult> => {
   switch (language) {
@@ -17,4 +18,11 @@ export const compile = async (code: string, language: Language): Promise<Compila
         error: 'Unsupported language',
       }
   }
+}
+
+export const compileFileStructure = async (
+  files: File[],
+  mainFile: File,
+): Promise<CompilationResult> => {
+  return await compilePythonFileStructure(files, mainFile)
 }

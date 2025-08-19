@@ -6,21 +6,21 @@ export type TerminalState = {
   activeTabId: string
   compilationResult: CompilationResult | null
 
-  toggleTab: () => void
-  openTab: () => void
-  closeTab: () => void
+  toggleTerminalTab: () => void
+  openTerminalTab: () => void
+  closeTerminalTab: () => void
 
   setCompilationResult: (result: CompilationResult) => void
-  reset: () => void
+  resetTerminal: () => void
 }
 
 export const createTerminalSlice: StateCreator<TerminalState> = (set) => ({
   isOpen: false,
   activeTabId: '',
   compilationResult: null,
-  toggleTab: () => set((state) => ({ isOpen: !state.isOpen })),
-  openTab: () => set(() => ({ isOpen: true })),
-  closeTab: () => set(() => ({ isOpen: false })),
+  toggleTerminalTab: () => set((state) => ({ isOpen: !state.isOpen })),
+  openTerminalTab: () => set(() => ({ isOpen: true })),
+  closeTerminalTab: () => set(() => ({ isOpen: false })),
   setCompilationResult: (result: CompilationResult) => set(() => ({ compilationResult: result })),
-  reset: () => set(() => ({ compilationResult: null, isOpen: false })),
+  resetTerminal: () => set(() => ({ compilationResult: null, isOpen: false })),
 })
