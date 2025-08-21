@@ -60,8 +60,12 @@ export const typographyConverter: JSXConverters<SerializedHeadingNode> = {
   inlineCode: ({ node, nodesToJSX }) => (
     <TypographyInlineCode>{nodesToJSX({ nodes: node.children })}</TypographyInlineCode>
   ),
-  bold: ({ node, nodesToJSX }) => <TypographyBold>{nodesToJSX({ nodes: node.children })}</TypographyBold>,
-  italic: ({ node, nodesToJSX }) => <TypographyItalic>{nodesToJSX({ nodes: node.children })}</TypographyItalic>,
+  bold: ({ node, nodesToJSX }) => (
+    <TypographyBold>{nodesToJSX({ nodes: node.children })}</TypographyBold>
+  ),
+  italic: ({ node, nodesToJSX }) => (
+    <TypographyItalic>{nodesToJSX({ nodes: node.children })}</TypographyItalic>
+  ),
   blocks: {
     Code: ({ node }) => {
       const fields = (node as any)?.fields || {}

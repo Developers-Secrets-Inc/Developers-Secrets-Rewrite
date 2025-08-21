@@ -39,7 +39,7 @@ export const getTutorialSectionOutline = query({
                             ? item.mainArticle
                             : item.mainArticle.id
                         const outline = await getArticleOutline({ id })
-                        return { ...outline, isActive: outline.slug === articleSlug }
+                        return outline
                       })(),
                     )
                   : none(),
@@ -47,7 +47,7 @@ export const getTutorialSectionOutline = query({
                   (item.articles ?? []).map(async (article) => {
                     const id = typeof article === 'number' ? article : article.id
                     const outline = await getArticleOutline({ id })
-                    return { ...outline, isActive: outline.slug === articleSlug }
+                    return outline
                   }),
                 ),
               }
@@ -55,7 +55,7 @@ export const getTutorialSectionOutline = query({
             return await (async () => {
               const id = typeof item.article === 'number' ? item.article : item.article.id
               const outline = await getArticleOutline({ id })
-              return { ...outline, isActive: outline.slug === articleSlug }
+              return outline
             })()
           }),
         ),

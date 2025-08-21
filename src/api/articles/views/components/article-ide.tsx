@@ -15,11 +15,14 @@ const terminalTabs = [
 ]
 
 export const ArticleIDE = () => {
-  const isExplorerOpen = useIDEStore((state) => state.isExplorerOpen)
+  const { isExplorerOpen } = useIDEStore((state) => state)
 
   return (
     <IDE.Root>
-      <ResizablePanelGroup direction="horizontal" className="relative flex flex-1 overflow-hidden border rounded-md border-border">
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="relative flex flex-1 overflow-hidden border rounded-md border-border"
+      >
         <ResizablePanel
           className={cn(!isExplorerOpen && 'hidden')}
           defaultSize={20}

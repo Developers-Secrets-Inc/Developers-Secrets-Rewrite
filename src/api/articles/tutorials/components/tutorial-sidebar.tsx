@@ -36,7 +36,7 @@ const getIcon = (icon: string) => {
   return icons[icon as keyof typeof icons]
 }
 
-const SubsectionAccordion = ({ subsection }: { subsection: SubsectionOutline }) => {
+const SubsectionAccordion = ({ subsection, tutorialSlug }: { subsection: SubsectionOutline, tutorialSlug: string }) => {
   return (
     <Collapsible defaultOpen className="group/collapsible">
       <SidebarMenuItem>
@@ -44,7 +44,7 @@ const SubsectionAccordion = ({ subsection }: { subsection: SubsectionOutline }) 
           <SidebarMenuButton>
             {isSome(subsection.mainArticle) ? (
               <Link
-                href={`/articles/${subsection.mainArticle.value.slug}`}
+                href={`/articles/${tutorialSlug}/${subsection.mainArticle.value.slug}`}
                 className="text-sidebar-foreground/70"
               >
                 {subsection.title}
@@ -63,8 +63,8 @@ const SubsectionAccordion = ({ subsection }: { subsection: SubsectionOutline }) 
                   <Link
                     href={
                       isSome(subsection.mainArticle)
-                        ? `/articles/${subsection.mainArticle.value.slug}/${article.slug}`
-                        : `/articles/${article.slug}`
+                        ? `/articles/${tutorialSlug}/${subsection.mainArticle.value.slug}/${article.slug}`
+                        : `/articles/${tutorialSlug}/${article.slug}`
                     }
                     className="text-sidebar-foreground/70"
                   >
@@ -80,21 +80,28 @@ const SubsectionAccordion = ({ subsection }: { subsection: SubsectionOutline }) 
   )
 }
 
-const SectionOutline = ({ section }: { section: SectionOutlineType }) => {
-  console.log(section)
+
+type ArticleType = 'tutorial' | 'examples' | 'references'
+
+const activeColors: Record<ArticleType, string> = {
+  tutorial: 'bg-primary/10 text-primary border-primary/20',
+  examples: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+  references: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+}
+
+const SectionOutline = ({ section, tutorialSlug, articleSlug }: { section: SectionOutlineType, tutorialSlug: string, articleSlug: string }) => {
 
   return (
     <SidebarMenu>
       {section.items.map((item) => {
-        console.log('Item', item)
         if (item.mainArticle) {
-          return <SubsectionAccordion key={item.title} subsection={item} />
+          return <SubsectionAccordion key={item.title} subsection={item} tutorialSlug={tutorialSlug} />
         }
 
         return (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild className="text-sidebar-foreground/70">
-              <Link href={'#'}>
+            <SidebarMenuButton asChild className="text-sidebar-foreground/70 data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:border data-[active=true]:border-primary/20" isActive={item.slug === articleSlug}>
+              <Link href={`/articles/${tutorialSlug}/${item.slug}`}>
                 {item.icon && getIcon(item.icon)}
                 {item.title}
               </Link>
@@ -109,11 +116,14 @@ const SectionOutline = ({ section }: { section: SectionOutlineType }) => {
 export const TutorialSidebar = ({
   sections,
   type,
+  tutorialSlug,
+  articleSlug,
 }: {
   sections: SectionOutlineType[]
   type: 'tutorial' | 'examples' | 'references'
+  tutorialSlug: string
+  articleSlug: string
 }) => {
-  console.log(sections)
 
   return (
     <Sidebar>
@@ -129,7 +139,7 @@ export const TutorialSidebar = ({
               {section.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SectionOutline section={section} />
+              <SectionOutline section={section} tutorialSlug={tutorialSlug} articleSlug={articleSlug} />
             </SidebarGroupContent>
           </SidebarGroup>
         ))}

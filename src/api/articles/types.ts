@@ -3,5 +3,4 @@ export type ArticleOutline = {
   icon?: string | null | undefined
   title: string
   slug: string
-  isActive: boolean
 }

@@ -12,23 +12,23 @@ export default async function Layout({
   children: React.ReactNode
   params: Promise<{ tutorial_slug: string; article_slug: string }>
 }) {
-  const { tutorial_slug, article_slug } = await params
+  const { tutorial_slug: tutorialSlug, article_slug: articleSlug } = await params
   const sections = await getTutorialSectionOutline({
-    tutorialSlug: tutorial_slug,
-    articleSlug: article_slug,
+    tutorialSlug,
+    articleSlug,
   })
 
   return (
     <SidebarProvider>
-      <TutorialSidebar sections={sections} type="tutorial" />
+      <TutorialSidebar
+        sections={sections}
+        type="tutorial"
+        tutorialSlug={tutorialSlug}
+        articleSlug={articleSlug}
+      />
       <SidebarInset className="h-screen flex flex-col min-h-0">
         <AppHeader />
-        <div className="relative flex-1 min-h-0 flex overflow-hidden">
-          <ArticlesSidebarTrigger />
-          <div className="flex-1 min-h-0 overflow-y-auto">
-            <ArticleViews>{children}</ArticleViews>
-          </div>
-        </div>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   )

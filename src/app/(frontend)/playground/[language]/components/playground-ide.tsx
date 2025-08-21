@@ -92,7 +92,7 @@ export const PlaygroundIDE = ({ language }: { language: Language }) => {
 
       <div className="md:hidden h-full">
         <div className="flex flex-col h-full border rounded-md">
-          <Tabs value={mobileTab} onValueChange={setMobileTab} className="flex-1 min-h-0">
+          <Tabs value={mobileTab} onValueChange={setMobileTab} className="flex-1 min-h-0 gap-0">
             <TabsContent value="files" className="flex-1 min-h-0 flex overflow-hidden">
               <div className="flex-1 min-h-0 w-full">
                 <IDE.Explorer.IDEExplorer />
@@ -119,7 +119,7 @@ export const PlaygroundIDE = ({ language }: { language: Language }) => {
               <CompilationResult />
             </TabsContent>
 
-            <div className="p-1">
+            <div className="p-1 border-t border-border">
               <TabsList className="w-full">
                 <TabsTrigger value="files">Files</TabsTrigger>
                 <TabsTrigger value="editor">Editor</TabsTrigger>
@@ -128,7 +128,7 @@ export const PlaygroundIDE = ({ language }: { language: Language }) => {
             </div>
           </Tabs>
         </div>
-      </div>
+      </div>  
     </div>
   )
 }
