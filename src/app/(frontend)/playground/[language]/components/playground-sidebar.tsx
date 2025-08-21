@@ -15,7 +15,7 @@ export function PlaygroundSidebar({ language }: { language: string }) {
   const isActive = (path: string) => language === path
 
   return (
-    <div className="w-12 h-full text-sidebar-foreground border-r border-sidebar-border flex flex-col items-center py-4 space-y-2">
+    <div className="hidden md:flex w-12 h-full text-sidebar-foreground border-r border-sidebar-border flex-col items-center py-2 space-y-2">
       {navItems.map((item) => (
         <Link
           key={item.path}

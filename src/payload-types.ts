@@ -71,6 +71,9 @@ export interface Config {
     media: Media;
     'blog-posts': BlogPost;
     tutorials: Tutorial;
+    articles: Article;
+    feedbacks: Feedback;
+    'support-messages': SupportMessage;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +84,9 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
     tutorials: TutorialsSelect<false> | TutorialsSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    feedbacks: FeedbacksSelect<false> | FeedbacksSelect<true>;
+    'support-messages': SupportMessagesSelect<false> | SupportMessagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -219,13 +225,108 @@ export interface Tutorial {
    */
   difficulty?: ('beginner' | 'intermediate' | 'advanced') | null;
   /**
-   * Estimated reading time in minutes
-   */
-  readingTime?: number | null;
-  /**
    * Publication date of the tutorial
    */
   publishedAt?: string | null;
+  /**
+   * Ordered sections of this tutorial
+   */
+  sections?:
+    | {
+        title: string;
+        /**
+         * Add entries: either an Article or a Sub-section
+         */
+        items?:
+          | (
+              | {
+                  article: number | Article;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'article';
+                }
+              | {
+                  title: string;
+                  mainArticle?: (number | null) | Article;
+                  /**
+                   * Articles included in this sub-section
+                   */
+                  articles: (number | Article)[];
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'subSection';
+                }
+            )[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Ordered sections of this tutorial
+   */
+  exampleSections?:
+    | {
+        title: string;
+        /**
+         * Add entries: either an Article or a Sub-section
+         */
+        items?:
+          | (
+              | {
+                  article: number | Article;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'article';
+                }
+              | {
+                  title: string;
+                  mainArticle?: (number | null) | Article;
+                  /**
+                   * Articles included in this sub-section
+                   */
+                  articles: (number | Article)[];
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'subSection';
+                }
+            )[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Ordered sections of this tutorial
+   */
+  referenceSections?:
+    | {
+        title: string;
+        /**
+         * Add entries: either an Article or a Sub-section
+         */
+        items?:
+          | (
+              | {
+                  article: number | Article;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'article';
+                }
+              | {
+                  title: string;
+                  mainArticle?: (number | null) | Article;
+                  /**
+                   * Articles included in this sub-section
+                   */
+                  articles: (number | Article)[];
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'subSection';
+                }
+            )[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   seo?: {
     meta?: {
       /**
@@ -260,6 +361,77 @@ export interface Tutorial {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  title: string;
+  /**
+   * Enter manually. Must be unique.
+   */
+  slug: string;
+  /**
+   * Optional: Navigation icon
+   */
+  icon?: string | null;
+  author: number | Admin;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Article difficulty
+   */
+  difficulty?: ('very-easy' | 'easy' | 'medium' | 'hard' | 'horrible') | null;
+  /**
+   * Optional: select related/similar articles
+   */
+  similarArticles?: (number | Article)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "feedbacks".
+ */
+export interface Feedback {
+  id: number;
+  message: string;
+  /**
+   * IP address of the user who submitted the feedback (for rate limiting)
+   */
+  ipAddress?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-messages".
+ */
+export interface SupportMessage {
+  id: number;
+  email: string;
+  message: string;
+  /**
+   * IP address of the user who submitted the message (for rate limiting)
+   */
+  ipAddress?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -280,6 +452,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tutorials';
         value: number | Tutorial;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'feedbacks';
+        value: number | Feedback;
+      } | null)
+    | ({
+        relationTo: 'support-messages';
+        value: number | SupportMessage;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -391,8 +575,85 @@ export interface TutorialsSelect<T extends boolean = true> {
   slug?: T;
   excerpt?: T;
   difficulty?: T;
-  readingTime?: T;
   publishedAt?: T;
+  sections?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              article?:
+                | T
+                | {
+                    article?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              subSection?:
+                | T
+                | {
+                    title?: T;
+                    mainArticle?: T;
+                    articles?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+            };
+        id?: T;
+      };
+  exampleSections?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              article?:
+                | T
+                | {
+                    article?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              subSection?:
+                | T
+                | {
+                    title?: T;
+                    mainArticle?: T;
+                    articles?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+            };
+        id?: T;
+      };
+  referenceSections?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              article?:
+                | T
+                | {
+                    article?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              subSection?:
+                | T
+                | {
+                    title?: T;
+                    mainArticle?: T;
+                    articles?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+            };
+        id?: T;
+      };
   seo?:
     | T
     | {
@@ -410,6 +671,42 @@ export interface TutorialsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  icon?: T;
+  author?: T;
+  content?: T;
+  difficulty?: T;
+  similarArticles?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "feedbacks_select".
+ */
+export interface FeedbacksSelect<T extends boolean = true> {
+  message?: T;
+  ipAddress?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-messages_select".
+ */
+export interface SupportMessagesSelect<T extends boolean = true> {
+  email?: T;
+  message?: T;
+  ipAddress?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

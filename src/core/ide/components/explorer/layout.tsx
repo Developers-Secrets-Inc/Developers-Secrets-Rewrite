@@ -12,7 +12,7 @@ const IDEExplorerHeader = ({ children }: { children: React.ReactNode }) => {
 
 const IDEExplorerContent = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-full w-full overflow-y-auto bg-background p-2">
+    <div className="h-full w-full overflow-y-auto bg-background p-1.5">
       <div className="flex h-full flex-col gap-2">
         <div>{children}</div>
       </div>

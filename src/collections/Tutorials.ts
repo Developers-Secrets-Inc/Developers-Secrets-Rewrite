@@ -17,7 +17,7 @@ export const Tutorials: CollectionConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Content',
+          label: 'Description',
           fields: [
             {
               name: 'title',
@@ -31,7 +31,7 @@ export const Tutorials: CollectionConfig = {
               required: true,
               unique: true,
               index: true,
-              admin: { 
+              admin: {
                 description: 'Will be auto-generated if left empty.',
                 position: 'sidebar',
               },
@@ -72,21 +72,213 @@ export const Tutorials: CollectionConfig = {
               },
             },
             {
-              name: 'readingTime',
-              type: 'number',
-              admin: {
-                position: 'sidebar',
-                description: 'Estimated reading time in minutes',
-              },
-            },
-            {
               name: 'publishedAt',
               type: 'date',
-              admin: { 
+              admin: {
                 position: 'sidebar',
                 description: 'Publication date of the tutorial',
               },
               index: true,
+            },
+          ],
+        },
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'sections',
+              type: 'array',
+              admin: {
+                description: 'Ordered sections of this tutorial',
+              },
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  label: 'Section title',
+                },
+                {
+                  name: 'items',
+                  type: 'blocks',
+                  admin: {
+                    description: 'Add entries: either an Article or a Sub-section',
+                  },
+                  blocks: [
+                    {
+                      slug: 'article',
+                      labels: { singular: 'Article', plural: 'Articles' },
+                      fields: [
+                        {
+                          name: 'article',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          required: true,
+                          label: 'Article',
+                        },
+                      ],
+                    },
+                    {
+                      slug: 'subSection',
+                      labels: { singular: 'Sub-section', plural: 'Sub-sections' },
+                      fields: [
+                        {
+                          name: 'title',
+                          type: 'text',
+                          required: true,
+                          label: 'Sub-section title',
+                        },
+                        {
+                          name: 'mainArticle',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          label: 'Main article',
+                        },
+                        {
+                          name: 'articles',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          hasMany: true,
+                          required: true,
+                          admin: {
+                            description: 'Articles included in this sub-section',
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'exampleSections',
+              type: 'array',
+              admin: {
+                description: 'Ordered sections of this tutorial',
+              },
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  label: 'Section title',
+                },
+                {
+                  name: 'items',
+                  type: 'blocks',
+                  admin: {
+                    description: 'Add entries: either an Article or a Sub-section',
+                  },
+                  blocks: [
+                    {
+                      slug: 'article',
+                      labels: { singular: 'Article', plural: 'Articles' },
+                      fields: [
+                        {
+                          name: 'article',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          required: true,
+                          label: 'Article',
+                        },
+                      ],
+                    },
+                    {
+                      slug: 'subSection',
+                      labels: { singular: 'Sub-section', plural: 'Sub-sections' },
+                      fields: [
+                        {
+                          name: 'title',
+                          type: 'text',
+                          required: true,
+                          label: 'Sub-section title',
+                        },
+                        {
+                          name: 'mainArticle',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          label: 'Main article',
+                        },
+                        {
+                          name: 'articles',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          hasMany: true,
+                          required: true,
+                          admin: {
+                            description: 'Articles included in this sub-section',
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'referenceSections',
+              type: 'array',
+              admin: {
+                description: 'Ordered sections of this tutorial',
+              },
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  label: 'Section title',
+                },
+                {
+                  name: 'items',
+                  type: 'blocks',
+                  admin: {
+                    description: 'Add entries: either an Article or a Sub-section',
+                  },
+                  blocks: [
+                    {
+                      slug: 'article',
+                      labels: { singular: 'Article', plural: 'Articles' },
+                      fields: [
+                        {
+                          name: 'article',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          required: true,
+                          label: 'Article',
+                        },
+                      ],
+                    },
+                    {
+                      slug: 'subSection',
+                      labels: { singular: 'Sub-section', plural: 'Sub-sections' },
+                      fields: [
+                        {
+                          name: 'title',
+                          type: 'text',
+                          required: true,
+                          label: 'Sub-section title',
+                        },
+                        {
+                          name: 'mainArticle',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          label: 'Main article',
+                        },
+                        {
+                          name: 'articles',
+                          type: 'relationship',
+                          relationTo: 'articles',
+                          hasMany: true,
+                          required: true,
+                          admin: {
+                            description: 'Articles included in this sub-section',
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
@@ -103,53 +295,54 @@ export const Tutorials: CollectionConfig = {
                   type: 'text',
                   maxLength: 60,
                   admin: {
-                    description: 'Title for search engines (50-60 characters)'
-                  }
+                    description: 'Title for search engines (50-60 characters)',
+                  },
                 },
                 {
                   name: 'description',
                   type: 'textarea',
                   maxLength: 160,
                   admin: {
-                    description: 'Description for search engines (120-160 characters)'
-                  }
+                    description: 'Description for search engines (120-160 characters)',
+                  },
                 },
                 {
                   name: 'keywords',
                   type: 'text',
                   admin: {
-                    description: 'Comma-separated keywords for SEO (e.g., python, tutorial, web development)'
-                  }
+                    description:
+                      'Comma-separated keywords for SEO (e.g., python, tutorial, web development)',
+                  },
                 },
                 {
                   name: 'image',
                   type: 'upload',
                   relationTo: 'media',
                   admin: {
-                    description: 'Image for social sharing (1200x630px recommended)'
-                  }
+                    description: 'Image for social sharing (1200x630px recommended)',
+                  },
                 },
                 {
                   name: 'canonicalUrl',
                   type: 'text',
                   admin: {
-                    description: 'Canonical URL (if different from default)'
-                  }
-                }
-              ]
+                    description: 'Canonical URL (if different from default)',
+                  },
+                },
+              ],
             },
             {
               name: 'structuredData',
               type: 'code',
               admin: {
                 language: 'json',
-                description: 'Custom JSON-LD structured data (optional)'
-              }
-            }
-          ]
-        }
-      ]
-    }
+                description: 'Custom JSON-LD structured data (optional)',
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
   hooks: {
     beforeChange: [

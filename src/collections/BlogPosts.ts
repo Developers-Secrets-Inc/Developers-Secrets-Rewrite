@@ -57,41 +57,6 @@ export const BlogPosts: CollectionConfig = {
       name: 'content',
       type: 'richText',
       required: true,
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [
-          ...defaultFeatures,
-          BlocksFeature({
-            blocks: [
-              {
-                slug: 'Code',
-                fields: [
-                  {
-                    name: 'language',
-                    type: 'select',
-                    options: [
-                      { label: 'TypeScript', value: 'ts' },
-                      { label: 'TSX', value: 'tsx' },
-                      { label: 'JavaScript', value: 'js' },
-                      { label: 'JSX', value: 'jsx' },
-                      { label: 'JSON', value: 'json' },
-                      { label: 'HTML', value: 'html' },
-                      { label: 'CSS', value: 'css' },
-                      { label: 'Bash', value: 'bash' },
-                      { label: 'Plain Text', value: 'plaintext' },
-                    ],
-                    defaultValue: 'ts',
-                  },
-                  {
-                    name: 'code',
-                    type: 'code',
-                  },
-                ],
-              },
-            ],
-            inlineBlocks: [],
-          }),
-        ],
-      }),
     },
     {
       name: 'publishedAt',

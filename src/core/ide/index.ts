@@ -4,6 +4,8 @@ import { IDEEditor } from './components/editor.client'
 import { IDEExplorerTrigger } from './components/explorer/trigger'
 import { IDEExplorer } from './components/explorer'
 import { IDETabs } from './components/tabs'
+import { IDETerminal } from './components/terminal'
+export { useInitializeIDE } from './hooks/use-initialize-ide'
 
 export const IDE = {
   Root: IDELayout.IDERoot,
@@ -17,10 +19,10 @@ export const IDE = {
     Content: IDEEditor,
     Tabs: IDETabs,
   },
-  Terminal: undefined,
   RunButton: RunButton,
   Explorer: {
     Trigger: IDEExplorerTrigger,
     IDEExplorer: IDEExplorer,
   },
+  Terminal: IDETerminal,
 }

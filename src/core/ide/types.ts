@@ -25,3 +25,18 @@ export type IDETab = {
 }
 
 export type FileSystemNode = FileNode | FolderNode
+
+// -------- Optional initialization config types --------
+// Paths are absolute from '/', folders are inferred from the path
+export type IDEInitialFile = {
+  path: `/${string}`
+  content?: string
+  locked?: boolean
+}
+
+export type IDEInitialConfig = {
+  files?: IDEInitialFile[]
+  openTabs?: (`/${string}`)[]
+  activeTab?: `/${string}`
+  explorer?: { open?: boolean }
+}

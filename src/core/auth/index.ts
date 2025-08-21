@@ -24,7 +24,7 @@ export const getUserById = query({
   args: z.object({
     id: z.uuid(),
   }),
-  handler: async ({ id }): Promise<Result<User, AuthError>> => {
+  handler: async (_, { id }): Promise<Result<User, AuthError>> => {
     const supabase = await createClient()
     const { data, error } = await supabase.auth.admin.getUserById(id)
 
@@ -44,7 +44,7 @@ export const signUp = mutation({
       }),
     }),
   }),
-  handler: async ({ email, password, options }): Promise<Result<Maybe<User>, AuthError>> => {
+  handler: async (_, { email, password, options }): Promise<Result<Maybe<User>, AuthError>> => {
     const supabase = await createClient()
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -63,7 +63,7 @@ export const signInWithPassword = mutation({
     email: z.email(),
     password: z.string(),
   }),
-  handler: async ({ email, password }): Promise<Result<User, AuthError>> => {
+  handler: async (_, { email, password }): Promise<Result<User, AuthError>> => {
     const supabase = await createClient()
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -118,4 +118,3 @@ export const signInWithGithub = mutation({
     return success(data)
   },
 })
-

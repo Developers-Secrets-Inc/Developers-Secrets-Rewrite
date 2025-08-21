@@ -25,6 +25,7 @@ const IDETab = ({ tab, isActive, onSelect, onClose }: IDETabProps) => {
       className={cn(
         'flex items-center gap-2 px-3 h-full text-sm border-r border-border cursor-pointer hover:bg-muted/50 transition-colors',
         'min-w-[120px] max-w-[200px] flex-shrink-0',
+        'first:rounded-tl-md',
         isActive && 'bg-background border-b-2 border-b-primary',
       )}
       onClick={handleClick}
@@ -42,7 +43,7 @@ const IDETab = ({ tab, isActive, onSelect, onClose }: IDETabProps) => {
 }
 
 export const IDETabs = () => {
-  const { openTabs, activeTabId, setActiveTab, closeTab, setActiveFileId } = useIDEStore()
+  const { openTabs, activeTab, setActiveTab, closeTab, setActiveFileId } = useIDEStore()
 
   const handleTabSelect = (tabId: string) => {
     setActiveTab(tabId)
@@ -58,13 +59,13 @@ export const IDETabs = () => {
   }
 
   return (
-    <div className={'flex h-12 bg-muted/30 border-b border-border overflow-x-auto max-w-full'}>
+    <div className={'flex h-12 bg-muted/30 border-b rounded-tl-md rounded-tr-md border-border overflow-x-auto max-w-full'}>
       <div className="flex min-w-0">
         {openTabs.map((tab) => (
           <IDETab
             key={tab.id}
             tab={tab}
-            isActive={tab.id === activeTabId}
+            isActive={tab.id === activeTab?.id}
             onSelect={handleTabSelect}
             onClose={closeTab}
           />

@@ -43,7 +43,7 @@ export const IDEEditor = ({ onChange }: { onChange?: (value: string | undefined)
     updateNodeContent,
     setActiveFileId,
     openTabs,
-    activeTabId,
+    activeTab,
     setActiveTab,
   } = useIDEStore()
 
@@ -73,10 +73,10 @@ export const IDEEditor = ({ onChange }: { onChange?: (value: string | undefined)
 
   // Synchroniser le fichier actif avec l'onglet actif
   useEffect(() => {
-    if (activeTabId === null) {
+    if (!activeTab) {
       setActiveFileId(null)
     }
-  }, [activeTabId, setActiveFileId])
+  }, [activeTab, setActiveFileId])
 
   const handleCodeChange = (value: string | undefined) => {
     if (value !== undefined) {
@@ -108,7 +108,7 @@ export const IDEEditor = ({ onChange }: { onChange?: (value: string | undefined)
       onChange={handleCodeChange}
       theme={editorTheme.name}
       onMount={handleEditorDidMount}
-      options={editorOptions('python')}
+      options={editorOptions(activeFile?.language || 'plaintext')}
     />
   )
 }

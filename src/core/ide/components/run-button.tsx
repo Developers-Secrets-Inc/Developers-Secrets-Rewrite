@@ -6,11 +6,14 @@ import { useCompile } from '@/core/compiler/client/react/hooks/use-compile'
 import { useIDEStore } from '@/core/ide/store/use-ide-store'
 import { transformFileTreeToExecutionStructure } from '../utils'
 
-export const RunButton = () => {
+export const RunButton = ({ onClick }: { onClick?: () => void }) => {
   const { compileFileStructure, isLoading } = useCompile()
   const { setCompilationResult, fileTree } = useIDEStore()
 
   const handleClick = async () => {
+    if (onClick) {
+      onClick()
+    }
     const executionStructure = transformFileTreeToExecutionStructure(fileTree)
 
     const compileResult = await compileFileStructure({
