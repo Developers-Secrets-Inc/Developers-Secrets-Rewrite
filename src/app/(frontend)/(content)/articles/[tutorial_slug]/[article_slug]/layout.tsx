@@ -4,6 +4,7 @@ import { ArticlesSidebarTrigger } from '@/api/articles/components/sidebar-trigge
 import { TutorialSidebar } from '@/api/articles/tutorials/components/tutorial-sidebar'
 import { getTutorialSectionOutline } from '@/api/articles/tutorials/sections/actions'
 import { ArticleViews } from '@/api/articles/views/components/article-views'
+import { PearlTriggerBubble } from '@/api/articles/ai/components/pearl-trigger-bubble'
 
 export default async function Layout({
   children,
@@ -26,9 +27,10 @@ export default async function Layout({
         tutorialSlug={tutorialSlug}
         articleSlug={articleSlug}
       />
-      <SidebarInset className="h-screen flex flex-col min-h-0">
+      <SidebarInset className="relative h-screen flex flex-col min-h-0">
         <AppHeader />
         {children}
+        <PearlTriggerBubble />
       </SidebarInset>
     </SidebarProvider>
   )

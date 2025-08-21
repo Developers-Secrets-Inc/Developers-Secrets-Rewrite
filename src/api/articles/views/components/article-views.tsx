@@ -6,7 +6,7 @@ import { ArticleIDE } from './article-ide'
 import { useSidebar } from '@/components/ui/sidebar'
 
 export const ArticleViews = ({ children }: { children: React.ReactNode }) => {
-  const { current } = useArticleViewsStore()
+  const { current, playgroundInit } = useArticleViewsStore()
   const { open, isMobile } = useSidebar()
 
   switch (current) {
@@ -45,7 +45,7 @@ export const ArticleViews = ({ children }: { children: React.ReactNode }) => {
             <ResizableHandle className="w-1 bg-transparent hover:bg-border transition-all duration-200" />
             <ResizablePanel defaultSize={50} minSize={40}>
               <div className="flex flex-col h-full min-h-0 rounded-md">
-                <ArticleIDE />
+                <ArticleIDE initial={playgroundInit ?? undefined} />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>

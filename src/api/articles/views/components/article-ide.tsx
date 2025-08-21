@@ -4,6 +4,8 @@ import { OutputContent } from '@/core/ide/components/output-content'
 import { useIDEStore } from '@/core/ide/store/use-ide-store'
 import { cn } from '@/lib/utils'
 import { CloseViewButton } from './close-view-button'
+import type { IDEInitialConfig } from '@/core/ide/types'
+import { useInitializeIDE } from '@/core/ide'
 
 const terminalTabs = [
   {
@@ -14,8 +16,13 @@ const terminalTabs = [
   },
 ]
 
-export const ArticleIDE = () => {
+type Props = {
+  initial?: IDEInitialConfig
+}
+
+export const ArticleIDE = ({ initial }: Props) => {
   const { isExplorerOpen } = useIDEStore((state) => state)
+  useInitializeIDE(initial, [initial])
 
   return (
     <IDE.Root>

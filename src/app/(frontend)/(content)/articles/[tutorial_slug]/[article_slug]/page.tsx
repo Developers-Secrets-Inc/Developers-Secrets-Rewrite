@@ -1,4 +1,5 @@
-  import { ArticlesSidebarTrigger } from '@/api/articles/components/sidebar-trigger'
+  import { ArticleCodeBlock } from '@/api/articles/components/article-code-block'
+import { ArticlesSidebarTrigger } from '@/api/articles/components/sidebar-trigger'
 import { getTutorialArticle } from '@/api/articles/tutorials/sections'
 import { ArticleViews } from '@/api/articles/views/components/article-views'
 import { RichText } from '@/components/richtext'
@@ -25,7 +26,7 @@ export default async function Page({
         <ArticleViews>
           <div className="space-y-6">
             <TypographyH1>{article.value.title}</TypographyH1>
-            <RichText data={article.value.content} />
+            <RichText data={article.value.content} overrides={{ blocks: { Code: ({ node }) => <ArticleCodeBlock language={node.fields.language} code={node.fields.code} /> } }} />
           </div>
         </ArticleViews>
       </div>
