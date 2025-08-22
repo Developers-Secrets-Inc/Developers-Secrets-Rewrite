@@ -14,9 +14,10 @@ export const getTutorialSectionOutline = query({
   args: z.object({
     tutorialSlug: z.string(),
     articleSlug: z.string(),
+    type: z.enum(['tutorial', 'examples', 'references']),
   }),
-  handler: async (_, { tutorialSlug, articleSlug }): Promise<SectionOutline[]> => {
-    const sections = await getTutorialSections({ tutorial_slug: tutorialSlug })
+  handler: async (_, { tutorialSlug, articleSlug, type }): Promise<SectionOutline[]> => {
+    const sections = await getTutorialSections({ tutorial_slug: tutorialSlug, type })
 
     if (isNone(sections)) return []
 

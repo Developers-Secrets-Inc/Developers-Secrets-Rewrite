@@ -27,6 +27,8 @@ import { FeedbackDialog } from '@/api/feedbacks/components/feedback-dialog'
 import { SupportDialog } from '@/api/support/components/support-message-dialog'
 import { FeedbackIcon } from '@/components/icons/feedback-icon'
 import { SupportStatusBadge } from '@/api/support/components/support-status-badge'
+import { getTutorialSectionOutline } from '../sections/actions'
+import { ArticleMetadata, ArticleType } from '../../types'
 
 const icons = {
   book: <Info />,
@@ -36,7 +38,13 @@ const getIcon = (icon: string) => {
   return icons[icon as keyof typeof icons]
 }
 
-const SubsectionAccordion = ({ subsection, tutorialSlug }: { subsection: SubsectionOutline, tutorialSlug: string }) => {
+const SubsectionAccordion = ({
+  subsection,
+  tutorialSlug,
+}: {
+  subsection: SubsectionOutline
+  tutorialSlug: string
+}) => {
   return (
     <Collapsible defaultOpen className="group/collapsible">
       <SidebarMenuItem>
@@ -80,28 +88,39 @@ const SubsectionAccordion = ({ subsection, tutorialSlug }: { subsection: Subsect
   )
 }
 
-
-type ArticleType = 'tutorial' | 'examples' | 'references'
-
 const activeColors: Record<ArticleType, string> = {
-  tutorial: 'bg-primary/10 text-primary border-primary/20',
-  examples: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-  references: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+  tutorial:
+    'data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:border-primary/20',
+  examples:
+    'data-[active=true]:bg-blue-500/10 data-[active=true]:text-blue-500 data-[active=true]:border-blue-500/20',
+  references:
+    'data-[active=true]:bg-purple-500/10 data-[active=true]:text-purple-500 data-[active=true]:border-purple-500/20',
 }
 
-const SectionOutline = ({ section, tutorialSlug, articleSlug }: { section: SectionOutlineType, tutorialSlug: string, articleSlug: string }) => {
-
+const SectionOutline = ({
+  section,
+  metadata,
+}: {
+  section: SectionOutlineType
+  metadata: ArticleMetadata
+}) => {
   return (
     <SidebarMenu>
       {section.items.map((item) => {
         if (item.mainArticle) {
-          return <SubsectionAccordion key={item.title} subsection={item} tutorialSlug={tutorialSlug} />
+          return (
+            <SubsectionAccordion key={item.title} subsection={item} tutorialSlug={metadata.tutorialSlug} />
+          )
         }
 
         return (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild className="text-sidebar-foreground/70 data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:border data-[active=true]:border-primary/20" isActive={item.slug === articleSlug}>
-              <Link href={`/articles/${tutorialSlug}/${item.slug}`}>
+            <SidebarMenuButton
+              asChild
+              className={`text-sidebar-foreground/70 data-[active=true]:border ${activeColors[metadata.type]}`}
+              isActive={item.slug === metadata.articleSlug}
+            >
+              <Link href={`/articles/${metadata.tutorialSlug}/${item.slug}`}>
                 {item.icon && getIcon(item.icon)}
                 {item.title}
               </Link>
@@ -113,24 +132,57 @@ const SectionOutline = ({ section, tutorialSlug, articleSlug }: { section: Secti
   )
 }
 
-export const TutorialSidebar = ({
-  sections,
-  type,
-  tutorialSlug,
-  articleSlug,
-}: {
-  sections: SectionOutlineType[]
-  type: 'tutorial' | 'examples' | 'references'
-  tutorialSlug: string
-  articleSlug: string
-}) => {
+const FeedbackMenu = () => {
+  return (
+    <FeedbackDialog>
+      <SidebarMenuItem>
+        <SidebarMenuButton className="cursor-pointer flex justify-between w-full">
+          <span className="flex items-center gap-2">
+            <MessageSquare className="size-4" />
+            Feedback
+          </span>
+          <FeedbackIcon />
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </FeedbackDialog>
+  )
+}
+
+const SupportMenu = () => {
+  return (
+    <SupportDialog>
+      <SidebarMenuItem>
+        <SidebarMenuButton className="cursor-pointer flex justify-between w-full">
+          <span className="flex items-center gap-2">
+            <HelpCircle className="size-4" />
+            Support
+          </span>
+          <SupportStatusBadge status={'online'} />
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SupportDialog>
+  )
+}
+
+const TutorialSidebarFooter = () => {
+  return (
+    <SidebarFooter>
+      <FeedbackMenu />
+      <SupportMenu />
+      <CreateAccountCTA />
+    </SidebarFooter>
+  )
+}
+
+export const TutorialSidebar = async (metadata: ArticleMetadata) => {
+  const sections = await getTutorialSectionOutline(metadata)
 
   return (
     <Sidebar>
       <SidebarHeader>
         <HomeButton />
         <TutorialSearchBar />
-        <ArticleTypeSwitcher />
+        <ArticleTypeSwitcher tutorialSlug={metadata.tutorialSlug} />
       </SidebarHeader>
       <SidebarContent>
         {sections.map((section) => (
@@ -139,36 +191,12 @@ export const TutorialSidebar = ({
               {section.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SectionOutline section={section} tutorialSlug={tutorialSlug} articleSlug={articleSlug} />
+              <SectionOutline section={section} metadata={metadata} />
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter>
-        <FeedbackDialog>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="cursor-pointer flex justify-between w-full">
-              <span className="flex items-center gap-2">
-                <MessageSquare className="size-4" />
-                Feedback
-              </span>
-              <FeedbackIcon />
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </FeedbackDialog>
-        <SupportDialog>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="cursor-pointer flex justify-between w-full">
-              <span className="flex items-center gap-2">
-                <HelpCircle className="size-4" />
-                Support
-              </span>
-              <SupportStatusBadge status={'online'} />
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SupportDialog>
-        <CreateAccountCTA />
-      </SidebarFooter>
+      <TutorialSidebarFooter />
       <SidebarRail />
     </Sidebar>
   )

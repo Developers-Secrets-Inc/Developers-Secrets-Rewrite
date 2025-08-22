@@ -41,7 +41,7 @@ export const useArticleViewsStore = create<ArticleViewsState>()(
           files: [{ path, content: code }],
           openTabs: [path],
           activeTab: path,
-          explorer: { open: true },
+          explorer: { open: false },
         }
         set({ current: 'playground', playgroundInit: init })
       },

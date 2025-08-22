@@ -29,7 +29,7 @@ const ArticleTypeIcon = {
   },
 }
 
-export function ArticleTypeSwitcher() {
+export function ArticleTypeSwitcher({ tutorialSlug }: { tutorialSlug: string }) {
   const [selectedType, setSelectedType] = React.useState<ArticleType>('tutorial')
 
   return (
@@ -56,7 +56,7 @@ export function ArticleTypeSwitcher() {
                 onSelect={() => setSelectedType(type as ArticleType)}
                 asChild
               >
-                <Link href={`/${type}`}>
+                <Link href={`/${tutorialSlug}/${type}`}>
                   <div
                     className={`${ArticleTypeIcon[type as ArticleType].color} border flex aspect-square size-8 items-center justify-center rounded-lg`}
                   >

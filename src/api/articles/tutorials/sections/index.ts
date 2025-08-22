@@ -13,6 +13,7 @@ import { getArticlesSlugs } from '../../actions'
 export const getTutorialSections = query({
   args: z.object({
     tutorial_slug: z.string(),
+    type: z.enum(['tutorial', 'examples', 'references']),
   }),
   handler: async (ctx, args): Promise<Maybe<NonNullable<Tutorial['sections']>>> => {
     const documents = await ctx.payload.find({
@@ -24,7 +25,14 @@ export const getTutorialSections = query({
       },
       depth: 0,
     })
-    return documents.docs[0].sections ? some(documents.docs[0].sections) : none()
+
+    const typeSection = {
+      tutorial: documents.docs[0].sections,
+      examples: documents.docs[0].exampleSections,
+      references: documents.docs[0].referenceSections,
+    }
+
+    return typeSection[args.type] ? some(typeSection[args.type]) : none()
   },
 })
 
@@ -32,9 +40,10 @@ export const getTutorialArticle = query({
   args: z.object({
     tutorial_slug: z.string(),
     article_slug: z.string(),
+    type: z.enum(['tutorial', 'examples', 'references']),
   }),
   handler: async (ctx, args): Promise<Maybe<Article>> => {
-    const sections = await getTutorialSections({ tutorial_slug: args.tutorial_slug })
+    const sections = await getTutorialSections({ tutorial_slug: args.tutorial_slug, type: args.type })
 
     if (isNone(sections)) return none()
 
