@@ -39,9 +39,17 @@ export default async function Page({
                 },
               }}
             />
-            <RecommendedArticles />
+            <RecommendedArticles
+              tutorialSlug={tutorial_slug}
+              type={type}
+              articleSlug={article_slug}
+            />
             <ArticleEngagement />
-            <NavigationArticles />
+            <NavigationArticles
+              tutorialSlug={tutorial_slug}
+              type={type}
+              articleSlug={article_slug}
+            />
           </div>
         </ArticleViews>
       </div>

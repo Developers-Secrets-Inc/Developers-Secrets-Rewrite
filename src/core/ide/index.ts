@@ -5,6 +5,7 @@ import { IDEExplorerTrigger } from './components/explorer/trigger'
 import { IDEExplorer } from './components/explorer'
 import { IDETabs } from './components/tabs'
 import { IDETerminal } from './components/terminal'
+import { Terminal, TerminalTabs, TerminalTabsContent, TerminalTabsList, TerminalTabsTrigger } from './components/footer'
 export { useInitializeIDE } from './hooks/use-initialize-ide'
 
 export const IDE = {
@@ -24,5 +25,11 @@ export const IDE = {
     Trigger: IDEExplorerTrigger,
     IDEExplorer: IDEExplorer,
   },
-  Terminal: IDETerminal,
+  Terminal: {
+    Root: Terminal,
+    Tabs: TerminalTabs,
+    TabsList: TerminalTabsList,
+    TabsTrigger: TerminalTabsTrigger,
+    TabsContent: TerminalTabsContent 
+  },
 }

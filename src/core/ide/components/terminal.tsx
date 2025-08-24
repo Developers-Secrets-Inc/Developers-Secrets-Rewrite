@@ -33,6 +33,22 @@ interface IDETerminalProps {
   tabs: FooterTab[]
 }
 
+const Terminal = ({ children }: { children: React.ReactNode }) => {
+  const { isTerminalOpen, toggleTerminalTab } =
+    useIDEStore()
+
+  return (
+    <div className="flex-shrink-0 flex border rounded-md border-border flex-col bg-background max-h-[40%] mt-1">
+      <div
+        className={cn('flex items-center justify-between h-10', isTerminalOpen ? 'border-b-0' : '')}
+        onDoubleClick={toggleTerminalTab}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+
 export const IDETerminal = ({ tabs }: IDETerminalProps) => {
   const { isTerminalOpen, toggleTerminalTab, activeTerminalTabId, setActiveTerminalTab } =
     useIDEStore()
@@ -42,10 +58,7 @@ export const IDETerminal = ({ tabs }: IDETerminalProps) => {
   return (
     <div className="flex-shrink-0 flex border rounded-md border-border flex-col bg-background max-h-[40%] mt-1">
       <div
-        className={cn(
-          'flex items-center justify-between h-10',
-          isTerminalOpen ? 'border-b-0' : '',
-        )}
+        className={cn('flex items-center justify-between h-10', isTerminalOpen ? 'border-b-0' : '')}
         onDoubleClick={toggleTerminalTab}
       >
         <Tabs

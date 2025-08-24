@@ -4,6 +4,7 @@ import { query } from '@/core/fn'
 import 'server-only'
 import z from 'zod'
 import { ArticleOutline } from './types'
+import { getTutorialSections } from './tutorials/sections'
 
 export const getArticlesSlugs = query({
   args: z.object({
@@ -42,3 +43,4 @@ export const getArticleOutline = query({
     return documents
   },
 })
+

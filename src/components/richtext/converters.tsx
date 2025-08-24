@@ -4,6 +4,7 @@ import type { JSX, ReactNode } from 'react'
 
 import { typographyConverter } from '@/components/richtext/typography-converter'
 import { internalDocToHref } from '@/components/richtext/internal-link'
+import { customConverter } from '@/components/richtext/custom-converter'
 
 type NodeTypes = DefaultNodeTypes
 
@@ -25,6 +26,7 @@ export const createJsxConverter =
       ...defaultConverters,
       ...LinkJSXConverter({ internalDocToHref }),
       ...typographyConverter,
+      ...customConverter,
     } as any
 
     if (overrides?.blocks?.Code) {

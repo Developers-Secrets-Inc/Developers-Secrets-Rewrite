@@ -55,7 +55,17 @@ export const ArticleIDE = ({ initial }: Props) => {
         </ResizablePanel>
         <IDE.Explorer.Trigger />
       </ResizablePanelGroup>
-      <IDE.Terminal tabs={terminalTabs} />
+      {/* <IDE.Terminal tabs={terminalTabs} /> */}
+      <IDE.Terminal.Root>
+        <IDE.Terminal.Tabs>
+          <IDE.Terminal.TabsList>
+            <IDE.Terminal.TabsTrigger value='output'>Output</IDE.Terminal.TabsTrigger>
+          </IDE.Terminal.TabsList>
+        </IDE.Terminal.Tabs>
+        <IDE.Terminal.TabsContent value='output'>
+          <OutputContent />
+        </IDE.Terminal.TabsContent>
+      </IDE.Terminal.Root>
     </IDE.Root>
   )
 }

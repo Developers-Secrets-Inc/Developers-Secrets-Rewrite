@@ -120,7 +120,7 @@ const SectionOutline = ({
               className={`text-sidebar-foreground/70 data-[active=true]:border ${activeColors[metadata.type]}`}
               isActive={item.slug === metadata.articleSlug}
             >
-              <Link href={`/articles/${metadata.tutorialSlug}/${item.slug}`}>
+              <Link href={`/articles/${metadata.type}/${metadata.tutorialSlug}/${item.slug}`}>
                 {item.icon && getIcon(item.icon)}
                 {item.title}
               </Link>
@@ -182,7 +182,7 @@ export const TutorialSidebar = async (metadata: ArticleMetadata) => {
       <SidebarHeader>
         <HomeButton />
         <TutorialSearchBar />
-        <ArticleTypeSwitcher tutorialSlug={metadata.tutorialSlug} />
+        <ArticleTypeSwitcher tutorialSlug={metadata.tutorialSlug} currentType={metadata.type} />
       </SidebarHeader>
       <SidebarContent>
         {sections.map((section) => (

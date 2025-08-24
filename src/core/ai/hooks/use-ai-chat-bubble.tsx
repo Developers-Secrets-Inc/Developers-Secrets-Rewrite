@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useMotionValue } from 'motion/react'
+import type { PanInfo } from 'motion'
 
 export type PearlSide = 'left' | 'right'
 
-export const usePearlBubble = () => {
+export const useAIChatBubble = () => {
   const [side, setSide] = useState<PearlSide>('right')
   const x = useMotionValue(0)
   const y = useMotionValue(0)
@@ -75,7 +76,10 @@ export const usePearlBubble = () => {
     }
   }, [vw, side, arcHeight, x, y, yDisplay])
 
-  const onDragEnd = (_evt: any, info: any) => {
+  const onDragEnd = (
+    _evt: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
     const cursorX = info?.point?.x ?? 0
     const width = typeof window !== 'undefined' ? window.innerWidth : vw
     if (width && cursorX < width / 2) {

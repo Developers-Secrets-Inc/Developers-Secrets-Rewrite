@@ -1,6 +1,3 @@
-'use client'
-
-import * as React from 'react'
 import { Check, ChevronsUpDown, GraduationCap, Code2, BookMarked } from 'lucide-react'
 
 import {
@@ -29,9 +26,13 @@ const ArticleTypeIcon = {
   },
 }
 
-export function ArticleTypeSwitcher({ tutorialSlug }: { tutorialSlug: string }) {
-  const [selectedType, setSelectedType] = React.useState<ArticleType>('tutorial')
-
+export function ArticleTypeSwitcher({
+  tutorialSlug,
+  currentType,
+}: {
+  tutorialSlug: string
+  currentType: ArticleType
+}) {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -39,23 +40,19 @@ export function ArticleTypeSwitcher({ tutorialSlug }: { tutorialSlug: string }) 
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton className="border border-border h-10 px-1">
               <div
-                className={`${ArticleTypeIcon[selectedType].color} border flex aspect-square size-8 items-center justify-center rounded-lg`}
+                className={`${ArticleTypeIcon[currentType].color} border flex aspect-square size-8 items-center justify-center rounded-lg`}
               >
-                {ArticleTypeIcon[selectedType].icon}
+                {ArticleTypeIcon[currentType].icon}
               </div>
               <div className="flex flex-col gap-0.5 leading-none font-semibold">
-                {selectedType.charAt(0).toUpperCase() + selectedType.slice(1)}
+                {currentType.charAt(0).toUpperCase() + currentType.slice(1)}
               </div>
               <ChevronsUpDown className="ml-auto text-muted-foreground" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)" align="start">
             {['tutorial', 'examples', 'references'].map((type) => (
-              <DropdownMenuItem
-                key={type}
-                onSelect={() => setSelectedType(type as ArticleType)}
-                asChild
-              >
+              <DropdownMenuItem key={type} asChild>
                 <Link href={`/${tutorialSlug}/${type}`}>
                   <div
                     className={`${ArticleTypeIcon[type as ArticleType].color} border flex aspect-square size-8 items-center justify-center rounded-lg`}
@@ -65,7 +62,6 @@ export function ArticleTypeSwitcher({ tutorialSlug }: { tutorialSlug: string }) 
                   <div className="flex flex-col gap-0.5 leading-none font-semibold">
                     {type.charAt(0).toUpperCase() + type.slice(1)}
                   </div>
-                  {type === selectedType && <Check className="ml-auto" />}
                 </Link>
               </DropdownMenuItem>
             ))}

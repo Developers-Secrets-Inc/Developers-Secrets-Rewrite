@@ -5,9 +5,12 @@ import { useArticleViewsStore } from '../store/use-article-views-store'
 import { ArticleIDE } from './article-ide'
 import { useSidebar } from '@/components/ui/sidebar'
 import { ArticlesSidebarTrigger } from '../../components/sidebar-trigger'
+import { AIChat } from '@/core/ai/components/ai-chat'
+import { Button } from '@/components/ui/button'
+import { XIcon } from 'lucide-react'
 
 export const ArticleViews = ({ children }: { children: React.ReactNode }) => {
-  const { current, playgroundInit } = useArticleViewsStore()
+  const { current, playgroundInit, toDefault } = useArticleViewsStore()
   const { open, isMobile } = useSidebar()
 
   switch (current) {
@@ -55,6 +58,36 @@ export const ArticleViews = ({ children }: { children: React.ReactNode }) => {
         </div>
       )
     case 'chat':
-      return <>{children}</>
+      return (
+        <div className="p-1 flex-1 min-h-0 flex overflow-hidden">
+          <ResizablePanelGroup
+            direction="horizontal"
+            className="relative flex-1 h-full min-h-0 overflow-hidden gap-0.5"
+          >
+            <ResizablePanel defaultSize={50} minSize={40}>
+              <div className="relative flex flex-col h-full border rounded-md">
+                <ArticlesSidebarTrigger onlyOn="playground" className="right-2 top-2 left-auto" />
+                <div className="flex-1 min-h-0 overflow-y-auto p-8">{children}</div>
+              </div>
+            </ResizablePanel>
+            <ResizableHandle className="w-1 bg-transparent hover:bg-border transition-all duration-200" />
+            <ResizablePanel defaultSize={50} minSize={40}>
+              <div className="flex flex-col h-full min-h-0 border border-border rounded-md">
+                <header className="shrink-0 border-b h-10 flex items-center justify-end p-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Close chat panel"
+                    onClick={toDefault}
+                  >
+                    <XIcon className="h-4 w-4" />
+                  </Button>
+                </header>
+                <AIChat />
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
+      )
   }
 }

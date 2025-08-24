@@ -1,8 +1,8 @@
-import { PearlTriggerBubble } from '@/api/articles/ai/components/pearl-trigger-bubble'
 import { TutorialSidebar } from '@/api/articles/tutorials/components/tutorial-sidebar'
 import { ArticleType } from '@/api/articles/types'
 import { AppHeader } from '@/components/headers/app-header'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
+import { ArticleAIChatMenu } from '@/api/articles/ai/components/ai-chat-menu'
 
 export default async function Layout({
   children,
@@ -20,7 +20,7 @@ export default async function Layout({
       <SidebarInset className="relative h-screen flex flex-col min-h-0">
         <AppHeader />
         {children}
-        <PearlTriggerBubble />
+        <ArticleAIChatMenu />
       </SidebarInset>
     </SidebarProvider>
   )

@@ -56,6 +56,39 @@ export default buildConfig({
               },
             ],
           },
+          {
+            slug: 'Quiz',
+            fields: [
+              {
+                name: 'question',
+                type: 'text',
+                required: true,
+              },
+              {
+                name: 'answers',
+                type: 'array',
+                required: true,
+                labels: { singular: 'Answer', plural: 'Answers' },
+                minRows: 2,
+                fields: [
+                  {
+                    name: 'text',
+                    type: 'text',
+                    required: true,
+                  },
+                ],
+              },
+              {
+                name: 'correctAnswerIndex',
+                type: 'number',
+                required: true,
+                defaultValue: 0,
+                admin: {
+                  description: 'Zero-based index of the correct answer',
+                },
+              },
+            ],
+          },
         ],
         inlineBlocks: [],
       }),
