@@ -1,6 +1,7 @@
 import { TutorialCategories } from '@/api/articles/tutorials/categories/components'
 import { AppHeader } from '@/components/headers/app-header'
 import { Sidebar, SidebarContent, SidebarProvider } from '@/components/ui/sidebar'
+import { Suspense } from 'react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,7 +14,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             collapsible="none"
           >
             <SidebarContent className="no-scrollbar px-2 pb-12">
-              <TutorialCategories />
+              <Suspense>
+                <TutorialCategories />
+              </Suspense>
             </SidebarContent>
           </Sidebar>
 
