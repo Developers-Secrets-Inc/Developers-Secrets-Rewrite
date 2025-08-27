@@ -20,8 +20,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-
-
 export const UserMenu = ({ user }: { user: User }) => {
   return (
     <DropdownMenu>
@@ -45,9 +43,11 @@ export const UserMenu = ({ user }: { user: User }) => {
               <span>Profile</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <SettingsIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Settings</span>
+          <DropdownMenuItem asChild>
+            <Link href="/account/settings">
+              <SettingsIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Settings</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/pricing">
