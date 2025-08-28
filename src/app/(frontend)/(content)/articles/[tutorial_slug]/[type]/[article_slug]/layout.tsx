@@ -3,6 +3,7 @@ import { ArticleType } from '@/api/articles/types'
 import { AppHeader } from '@/components/headers/app-header'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { ArticleAIChatMenu } from '@/api/articles/ai/components/ai-chat-menu'
+import { ArticleProvider } from '@/api/articles/providers/article-provider'
 
 export default async function Layout({
   children,
@@ -15,13 +16,15 @@ export default async function Layout({
   const metadata = { tutorialSlug, type, articleSlug }
 
   return (
-    <SidebarProvider>
-      <TutorialSidebar {...metadata} />
-      <SidebarInset className="relative h-screen flex flex-col min-h-0">
-        <AppHeader />
-        {children}
-        <ArticleAIChatMenu />
-      </SidebarInset>
-    </SidebarProvider>
+    <ArticleProvider {...metadata}>
+      <SidebarProvider>
+        <TutorialSidebar {...metadata} />
+        <SidebarInset className="relative h-screen flex flex-col min-h-0">
+          <AppHeader />
+          {children}
+          <ArticleAIChatMenu />
+        </SidebarInset>
+      </SidebarProvider>
+    </ArticleProvider>
   )
 }

@@ -1,8 +1,3 @@
-
-
-
-export default function Page() {
-    return (
-        <></>
-    )
+export default async function Page() {
+  return <></>
 }

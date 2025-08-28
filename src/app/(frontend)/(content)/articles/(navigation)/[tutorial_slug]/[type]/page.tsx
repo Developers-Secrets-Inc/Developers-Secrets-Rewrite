@@ -2,8 +2,64 @@ import Link from 'next/link'
 import { BookOpen, Code2, BookMarked, GraduationCap, TerminalSquare } from 'lucide-react'
 import { PopularArticles } from '@/api/articles/components/popular-articles'
 import { ArticlesTable } from '@/api/articles/components/articles-table'
+import { PythonLogoIcon } from '@/components/icons/python-logo-icon'
 
+const ArticleNavLink = ({
+  href,
+  icon: Icon,
+  label,
+  isActive,
+}: {
+  href: string
+  icon: React.ElementType
+  label: string
+  isActive: boolean
+}) => (
+  <Link
+    href={href}
+    className={`inline-flex items-center gap-2 pb-2 leading-none ${
+      isActive
+        ? "relative inline-flex items-center gap-2 pb-2 leading-none text-foreground font-semibold after:absolute after:left-0 after:-bottom-[16px] after:h-1 after:w-full after:bg-primary after:rounded-t-full after:content-['']"
+        : 'text-muted-foreground hover:text-foreground'
+    }`}
+  >
+    <Icon className="h-5 w-5" />
+    {label}
+  </Link>
+)
 
+const navLinks = (tutorialSlug: string) => [
+  {
+    href: `/articles/${tutorialSlug}/tutorial`,
+    icon: BookOpen,
+    label: 'Tutorial',
+    type: 'tutorial',
+  },
+  {
+    href: `/catalog/courses/${tutorialSlug}`,
+    icon: GraduationCap,
+    label: 'Course',
+    type: 'course',
+  },
+  {
+    href: `/articles/${tutorialSlug}/examples`,
+    icon: Code2,
+    label: 'Examples',
+    type: 'examples',
+  },
+  {
+    href: `/articles/${tutorialSlug}/references`,
+    icon: BookMarked,
+    label: 'References',
+    type: 'references',
+  },
+  {
+    href: `/playground/python`,
+    icon: TerminalSquare,
+    label: 'Playground',
+    type: 'playground',
+  },
+]
 
 export default async function Page({
   params,
@@ -15,49 +71,22 @@ export default async function Page({
   return (
     <div className="mb-6">
       <div className="flex items-stretch gap-4">
-        <div className="self-stretch flex-none aspect-square min-w-[7rem] h-32 rounded-md bg-muted flex items-center justify-center py-3 md:py-4">
-          <BookOpen className="h-12 w-12 text-muted-foreground" />
+        <div className="self-stretch flex-none aspect-square min-w-[7rem] h-32 rounded-md border border-border flex items-center justify-center py-3 md:py-4">
+          <PythonLogoIcon className="h-12 w-12" />
         </div>
 
         <div className="flex-1 self-end">
-          <h1 className="text-4xl font-semibold tracking-tight">Python</h1>
+          <h1 className="text-4xl font-semibold tracking-tight">{tutorial_slug}</h1>
           <nav className="mt-8 flex items-end gap-12 text-lg border-b border-border pb-4">
-            <Link
-              href="/articles/python/tutorial"
-              aria-current="page"
-              className="relative inline-flex items-center gap-2 pb-2 leading-none text-foreground font-semibold after:absolute after:left-0 after:-bottom-[16px] after:h-1 after:w-full after:bg-primary after:rounded-t-full after:content-['']"
-            >
-              <BookOpen className="h-5 w-5" />
-              Tutorial
-            </Link>
-            <Link
-              href="/articles/python/course"
-              className="inline-flex items-center gap-2 pb-2 leading-none text-muted-foreground hover:text-foreground"
-            >
-              <GraduationCap className="h-5 w-5" />
-              Course
-            </Link>
-            <Link
-              href="/articles/python/examples"
-              className="inline-flex items-center gap-2 pb-2 leading-none text-muted-foreground hover:text-foreground"
-            >
-              <Code2 className="h-5 w-5" />
-              Examples
-            </Link>
-            <Link
-              href="/articles/python/references"
-              className="inline-flex items-center gap-2 pb-2 leading-none text-muted-foreground hover:text-foreground"
-            >
-              <BookMarked className="h-5 w-5" />
-              References
-            </Link>
-            <Link
-              href="/articles/playground/python"
-              className="inline-flex items-center gap-2 pb-2 leading-none text-muted-foreground hover:text-foreground"
-            >
-              <TerminalSquare className="h-5 w-5" />
-              Compiler
-            </Link>
+            {navLinks(tutorial_slug).map((link) => (
+              <ArticleNavLink
+                key={link.type}
+                href={link.href}
+                icon={link.icon}
+                label={link.label}
+                isActive={type === link.type}
+              />
+            ))}
           </nav>
         </div>
       </div>

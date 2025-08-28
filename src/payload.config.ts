@@ -14,6 +14,7 @@ import { Tutorials } from './collections/Tutorials'
 import { Articles } from './collections/Articles'
 import { Feedbacks } from './collections/Feedbacks'
 import { SupportMessages } from './collections/SupportMessages'
+import { GamificationProfiles } from './collections/GamificationProfiles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Admins, Media, BlogPosts, Tutorials, Articles, Feedbacks, SupportMessages],
+  collections: [Admins, Media, BlogPosts, Tutorials, Articles, Feedbacks, SupportMessages, GamificationProfiles],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,

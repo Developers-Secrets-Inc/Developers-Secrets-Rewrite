@@ -74,6 +74,7 @@ export interface Config {
     articles: Article;
     feedbacks: Feedback;
     'support-messages': SupportMessage;
+    'gamification-profiles': GamificationProfile;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -87,6 +88,7 @@ export interface Config {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     feedbacks: FeedbacksSelect<false> | FeedbacksSelect<true>;
     'support-messages': SupportMessagesSelect<false> | SupportMessagesSelect<true>;
+    'gamification-profiles': GamificationProfilesSelect<false> | GamificationProfilesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -431,6 +433,21 @@ export interface SupportMessage {
   createdAt: string;
 }
 /**
+ * Per-user gamification state (level and XP).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gamification-profiles".
+ */
+export interface GamificationProfile {
+  id: number;
+  userId: string;
+  currentLevel: number;
+  currentXP: number;
+  totalXP: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
@@ -464,6 +481,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'support-messages';
         value: number | SupportMessage;
+      } | null)
+    | ({
+        relationTo: 'gamification-profiles';
+        value: number | GamificationProfile;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -705,6 +726,18 @@ export interface SupportMessagesSelect<T extends boolean = true> {
   email?: T;
   message?: T;
   ipAddress?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gamification-profiles_select".
+ */
+export interface GamificationProfilesSelect<T extends boolean = true> {
+  userId?: T;
+  currentLevel?: T;
+  currentXP?: T;
+  totalXP?: T;
   updatedAt?: T;
   createdAt?: T;
 }

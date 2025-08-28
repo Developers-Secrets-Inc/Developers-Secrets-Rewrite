@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\ide/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\ide/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\ide/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\ide/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\server/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\client/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\client/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\client/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\client/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\client/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\client\\react\\hooks/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\client\\workers/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\filesystem/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\filesystem/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\filesystem/**)",
+      "Read(C:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\compiler\\filesystem/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -3,6 +3,7 @@
 import type * as React from 'react'
 import Link from 'next/link'
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from 'lucide-react'
+import { SquarePen, ScrollText, Play, Book } from 'lucide-react'
 
 import {
   NavigationMenu,
@@ -106,6 +107,33 @@ const tutorials: { title: string; href: string; description: string; icon: React
   },
 ]
 
+const resources: { title: string; href: string; description: string; icon: React.ElementType }[] = [
+  {
+    title: 'Blog',
+    href: '/blog',
+    description: 'Stay up-to-date with our latest news and articles.',
+    icon: SquarePen,
+  },
+  {
+    title: 'Changelog',
+    href: '/changelog',
+    description: "See what's new in our platform.",
+    icon: ScrollText,
+  },
+  {
+    title: 'Playgrounds',
+    href: '/playground/python',
+    description: 'Code directly in your browser.',
+    icon: Play,
+  },
+  {
+    title: 'Guides',
+    href: '/guides',
+    description: 'In-depth guides and tutorials for various topics.',
+    icon: Book,
+  },
+]
+
 export const AppNavigation = ({ className }: { className?: string }) => {
   return (
     <NavigationMenu viewport={false} className={className}>
@@ -177,19 +205,28 @@ export const AppNavigation = ({ className }: { className?: string }) => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink
-            asChild
-            className={cn(navigationMenuTriggerStyle(), 'text-muted-foreground')}
-          >
-            <Link href="/pricing">Pricing</Link>
-          </NavigationMenuLink>
+          <NavigationMenuTrigger className="text-muted-foreground">Resources</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-1 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              {resources.map((resource) => (
+                <ListItem
+                  key={resource.title}
+                  title={resource.title}
+                  href={resource.href}
+                  icon={resource.icon}
+                >
+                  {resource.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink
             asChild
             className={cn(navigationMenuTriggerStyle(), 'text-muted-foreground')}
           >
-            <Link href="/blog">Blog</Link>
+            <Link href="/pricing">Pricing</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
@@ -209,7 +246,7 @@ function ListItem({
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className="flex flex-row flex-nowrap select-none items-center space-x-3 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          className="flex flex-row flex-nowrap select-none items-start space-x-3 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
         >
           {Icon && (
             <div className="flex flex-shrink-0 h-9 w-9 items-center justify-center rounded-md border">

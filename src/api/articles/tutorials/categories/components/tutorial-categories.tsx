@@ -1,21 +1,17 @@
-'use client'
-
-import * as React from 'react'
+import { Lock } from 'lucide-react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { ChevronRight, Lock } from 'lucide-react'
 
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
-import { cn } from '@/lib/utils'
 
 // Types to support locked tutorials
 type TutorialItem = { name: string; slug: string; locked?: boolean }
@@ -91,29 +87,6 @@ const categories: TutorialCategory[] = [
 ]
 
 export const TutorialCategories = () => {
-  const searchParams = useSearchParams()
-  const active = searchParams.get('category') ?? ''
-
-  // Track which groups are open
-  const [open, setOpen] = React.useState<Record<string, boolean>>({})
-
-  // Ensure the group with the active category is opened by default
-  React.useEffect(() => {
-    if (!active) return
-    // Find the subgroup that contains the active slug and open it
-    for (const cat of categories) {
-      for (const subgroup of cat.groups) {
-        if (subgroup.type === 'accordion' && subgroup.items.some((i) => i.slug === active)) {
-          const subKey = `${cat.id}:${subgroup.id}`
-          setOpen((prev) => (prev[subKey] ? prev : { ...prev, [subKey]: true }))
-          return
-        }
-      }
-    }
-  }, [active])
-
-  const toggle = (id: string) => setOpen((prev) => ({ ...prev, [id]: !prev[id] }))
-
   return (
     <>
       {categories.map((category) => (
@@ -127,53 +100,35 @@ export const TutorialCategories = () => {
                 if (group.type === 'single') {
                   return (
                     <SidebarMenuItem key={group.id}>
-                      {group.locked ? (
-                        <SidebarMenuSubButton aria-disabled title="Locked">
-                          <Lock className="opacity-70" />
-                          <span>{group.name}</span>
-                        </SidebarMenuSubButton>
-                      ) : (
-                        <SidebarMenuSubButton asChild isActive={active === group.slug}>
-                          <Link href={`/articles?category=${group.slug}`}>{group.name}</Link>
-                        </SidebarMenuSubButton>
-                      )}
+                      <SidebarMenuSubButton asChild>
+                        <Link href={`/articles/${group.slug}`}>{group.name}</Link>
+                      </SidebarMenuSubButton>
                     </SidebarMenuItem>
                   )
                 }
 
-                const subKey = `${category.id}:${group.id}`
-                const isSubOpen = !!open[subKey]
                 return (
                   <SidebarMenuItem key={group.id}>
-                    <SidebarMenuSubButton
-                      onClick={() => toggle(subKey)}
-                      className="justify-between"
-                      aria-expanded={isSubOpen}
-                    >
+                    <SidebarMenuButton className="justify-between">
                       <span>{group.name}</span>
-                      <ChevronRight
-                        className={cn('transition-transform', isSubOpen ? 'rotate-90' : 'rotate-0')}
-                      />
-                    </SidebarMenuSubButton>
+                    </SidebarMenuButton>
 
-                    {isSubOpen && (
-                      <SidebarMenuSub>
-                        {group.items.map((item) => (
-                          <SidebarMenuSubItem key={item.slug}>
-                            {item.locked ? (
-                              <SidebarMenuSubButton aria-disabled title="Locked">
-                                <Lock className="opacity-70" />
-                                <span>{item.name}</span>
-                              </SidebarMenuSubButton>
-                            ) : (
-                              <SidebarMenuSubButton asChild isActive={active === item.slug}>
-                                <Link href={`/articles/${item.slug}`}>{item.name}</Link>
-                              </SidebarMenuSubButton>
-                            )}
-                          </SidebarMenuSubItem>
-                        ))}
-                      </SidebarMenuSub>
-                    )}
+                    <SidebarMenuSub>
+                      {group.items.map((item) => (
+                        <SidebarMenuSubItem key={item.slug}>
+                          {item.locked ? (
+                            <SidebarMenuSubButton aria-disabled>
+                              <Lock className="opacity-70" />
+                              <span>{item.name}</span>
+                            </SidebarMenuSubButton>
+                          ) : (
+                            <SidebarMenuSubButton asChild>
+                              <Link href={`/articles/${item.slug}`}>{item.name}</Link>
+                            </SidebarMenuSubButton>
+                          )}
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
                   </SidebarMenuItem>
                 )
               })}
