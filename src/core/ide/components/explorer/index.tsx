@@ -45,6 +45,12 @@ const CreationDialog = ({
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              onCreate(name)
+            }
+          }}
           placeholder={`Enter ${type} name`}
         />
         <DialogFooter>
@@ -114,7 +120,7 @@ export const IDEExplorer = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [name, setName] = useState('')
 
-  const { canModifyNode, addFile, addFolder } = useIDEStore()
+  const { canModifyNode, addFile, addFolder, createAndOpenFile } = useIDEStore()
 
   const handleOpenDialog = (type: 'file' | 'folder', parentId: string) => {
     setCreateType(type)
@@ -134,7 +140,7 @@ export const IDEExplorer = () => {
       }
 
       if (createType === 'file') {
-        addFile(parentId, name)
+        createAndOpenFile(parentId, name)
       } else {
         addFolder(parentId, name)
       }

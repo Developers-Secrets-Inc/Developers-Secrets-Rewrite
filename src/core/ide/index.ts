@@ -1,3 +1,5 @@
+'use client'
+
 import * as IDELayout from './components/layout'
 import { RunButton } from './components/run-button'
 import { IDEEditor } from './components/editor.client'

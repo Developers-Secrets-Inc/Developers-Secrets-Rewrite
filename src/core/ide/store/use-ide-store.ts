@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import type { IDETab } from './types'
 import { TerminalState, createTerminalSlice } from './use-terminal-store'
 import { ExplorerState, createExplorerSlice } from './use-explorer-store'
 import { IDETabsState, createTabsSlice } from './use-tabs-store'
@@ -13,6 +14,8 @@ export type IDEState = TerminalState &
   FileTreeState &
   SaveLoadState & {
     resetAll: () => void
+  } & {
+    createAndOpenFile: (parentId: string, fileName: string) => void
   }
 
 export const useIDEStore = create<IDEState & SaveLoadActions>((...a) => {
@@ -37,6 +40,21 @@ export const useIDEStore = create<IDEState & SaveLoadActions>((...a) => {
       editorSlice.resetEditor()
       fileTreeSlice.resetTree()
       saveLoadSlice.reset()
+    },
+    createAndOpenFile: (parentId: string, fileName: string) => {
+      const newFileId = fileTreeSlice.addFile(parentId, fileName)
+      const fileNode = fileTreeSlice.fileTree.find(file => file.id === newFileId)
+      if (fileNode && fileNode.type === 'file') {
+        const newTab: IDETab = {
+          id: crypto.randomUUID(),
+          fileId: newFileId,
+          fileName: fileNode.name,
+          language: fileNode.language
+        }
+        tabsSlice.openTab(newTab)
+        editorSlice.setActiveFileId(newFileId)
+        tabsSlice.setActiveTab(newTab.id)
+      }
     },
   }
 })

@@ -21,7 +21,7 @@ export type IDETab = {
   id: string
   fileId: string
   fileName: string
-  language: Language
+  language: string
 }
 
 export type FileSystemNode = FileNode | FolderNode

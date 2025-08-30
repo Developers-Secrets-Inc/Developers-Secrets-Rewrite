@@ -7,15 +7,6 @@ import { CloseViewButton } from './close-view-button'
 import type { IDEInitialConfig } from '@/core/ide/types'
 import { useInitializeIDE } from '@/core/ide'
 
-const terminalTabs = [
-  {
-    id: 'output',
-    title: 'Output',
-    content: <OutputContent />,
-    icon: 'file-output',
-  },
-]
-
 type Props = {
   initial?: IDEInitialConfig
 }
@@ -55,7 +46,6 @@ export const ArticleIDE = ({ initial }: Props) => {
         </ResizablePanel>
         <IDE.Explorer.Trigger />
       </ResizablePanelGroup>
-      {/* <IDE.Terminal tabs={terminalTabs} /> */}
       <IDE.Terminal.Root>
         <IDE.Terminal.Tabs>
           <IDE.Terminal.TabsList>

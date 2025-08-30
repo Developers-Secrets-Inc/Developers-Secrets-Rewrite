@@ -75,6 +75,13 @@ export interface Config {
     feedbacks: Feedback;
     'support-messages': SupportMessage;
     'gamification-profiles': GamificationProfile;
+    challenges: Challenge;
+    'user-challenge-progress': UserChallengeProgress;
+    'challenge-access': ChallengeAccess;
+    'challenge-engagement': ChallengeEngagement;
+    'challenge-rating': ChallengeRating;
+    exercises: Exercise;
+    'user-submissions': UserSubmission;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -89,6 +96,13 @@ export interface Config {
     feedbacks: FeedbacksSelect<false> | FeedbacksSelect<true>;
     'support-messages': SupportMessagesSelect<false> | SupportMessagesSelect<true>;
     'gamification-profiles': GamificationProfilesSelect<false> | GamificationProfilesSelect<true>;
+    challenges: ChallengesSelect<false> | ChallengesSelect<true>;
+    'user-challenge-progress': UserChallengeProgressSelect<false> | UserChallengeProgressSelect<true>;
+    'challenge-access': ChallengeAccessSelect<false> | ChallengeAccessSelect<true>;
+    'challenge-engagement': ChallengeEngagementSelect<false> | ChallengeEngagementSelect<true>;
+    'challenge-rating': ChallengeRatingSelect<false> | ChallengeRatingSelect<true>;
+    exercises: ExercisesSelect<false> | ExercisesSelect<true>;
+    'user-submissions': UserSubmissionsSelect<false> | UserSubmissionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -449,6 +463,185 @@ export interface GamificationProfile {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenges".
+ */
+export interface Challenge {
+  id: number;
+  title: string;
+  /**
+   * Enter manually. Must be unique.
+   */
+  slug: string;
+  /**
+   * Challenge difficulty level
+   */
+  difficulty: 'very_easy' | 'easy' | 'medium' | 'hard' | 'horrible';
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Step-by-step hints for the challenge
+   */
+  hints?:
+    | {
+        hint: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Official solution for the challenge
+   */
+  officialSolution: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Related challenges that users might also enjoy
+   */
+  similarChallenges?: (number | Challenge)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Per-user challenge progress tracking
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-challenge-progress".
+ */
+export interface UserChallengeProgress {
+  id: number;
+  userId: string;
+  challenge: number | Challenge;
+  /**
+   * Current status of the challenge for this user
+   */
+  status: 'not_started' | 'in_progress' | 'completed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Challenge solution access tracking
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenge-access".
+ */
+export interface ChallengeAccess {
+  id: number;
+  userId: string;
+  challenge: number | Challenge;
+  /**
+   * How the user gained access to the solution
+   */
+  accessType: 'completed' | 'abandoned' | 'admin';
+  /**
+   * When the solution was unlocked
+   */
+  unlockedAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * User engagement tracking for challenges
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenge-engagement".
+ */
+export interface ChallengeEngagement {
+  id: number;
+  userId: string;
+  challenge: number | Challenge;
+  /**
+   * Type of user engagement
+   */
+  engagementType: 'like' | 'dislike';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * User ratings for challenges
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenge-rating".
+ */
+export interface ChallengeRating {
+  id: number;
+  userId: string;
+  challenge: number | Challenge;
+  /**
+   * User rating (1-5 stars)
+   */
+  rating: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercises".
+ */
+export interface Exercise {
+  id: number;
+  name: string;
+  /**
+   * Type of exercise determines the specific fields available
+   */
+  type: 'classic' | 'ai' | 'sql';
+  exerciseData?: {
+    classic?: {};
+    ai?: {};
+    sql?: {};
+  };
+  initialFileSystem?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * User submissions storage
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-submissions".
+ */
+export interface UserSubmission {
+  id: number;
+  /**
+   * User who made this submission
+   */
+  authorId: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -485,6 +678,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'gamification-profiles';
         value: number | GamificationProfile;
+      } | null)
+    | ({
+        relationTo: 'challenges';
+        value: number | Challenge;
+      } | null)
+    | ({
+        relationTo: 'user-challenge-progress';
+        value: number | UserChallengeProgress;
+      } | null)
+    | ({
+        relationTo: 'challenge-access';
+        value: number | ChallengeAccess;
+      } | null)
+    | ({
+        relationTo: 'challenge-engagement';
+        value: number | ChallengeEngagement;
+      } | null)
+    | ({
+        relationTo: 'challenge-rating';
+        value: number | ChallengeRating;
+      } | null)
+    | ({
+        relationTo: 'exercises';
+        value: number | Exercise;
+      } | null)
+    | ({
+        relationTo: 'user-submissions';
+        value: number | UserSubmission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -738,6 +959,98 @@ export interface GamificationProfilesSelect<T extends boolean = true> {
   currentLevel?: T;
   currentXP?: T;
   totalXP?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenges_select".
+ */
+export interface ChallengesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  difficulty?: T;
+  description?: T;
+  hints?:
+    | T
+    | {
+        hint?: T;
+        id?: T;
+      };
+  officialSolution?: T;
+  similarChallenges?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-challenge-progress_select".
+ */
+export interface UserChallengeProgressSelect<T extends boolean = true> {
+  userId?: T;
+  challenge?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenge-access_select".
+ */
+export interface ChallengeAccessSelect<T extends boolean = true> {
+  userId?: T;
+  challenge?: T;
+  accessType?: T;
+  unlockedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenge-engagement_select".
+ */
+export interface ChallengeEngagementSelect<T extends boolean = true> {
+  userId?: T;
+  challenge?: T;
+  engagementType?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenge-rating_select".
+ */
+export interface ChallengeRatingSelect<T extends boolean = true> {
+  userId?: T;
+  challenge?: T;
+  rating?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercises_select".
+ */
+export interface ExercisesSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  exerciseData?:
+    | T
+    | {
+        classic?: T | {};
+        ai?: T | {};
+        sql?: T | {};
+      };
+  initialFileSystem?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-submissions_select".
+ */
+export interface UserSubmissionsSelect<T extends boolean = true> {
+  authorId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

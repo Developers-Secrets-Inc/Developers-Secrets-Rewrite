@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(c:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\plugins\\challenges\\engagement\\components/**)",
+      "Read(c:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\plugins\\challenges\\engagement\\components/**)",
+      "Read(c:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\plugins\\challenges\\engagement\\hooks/**)",
+      "Read(c:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\ide\\utils/**)",
+      "Read(c:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\ide\\types/**)",
+      "Read(c:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\core\\ide/**)",
+      "Read(c:\\Users\\david\\Documents\\Github\\developers-secrets-rewrite\\src\\collections/**)"
+    ],
+    "deny": [],
+    "ask": [
+      "Write"
+    ]
+  }
+}

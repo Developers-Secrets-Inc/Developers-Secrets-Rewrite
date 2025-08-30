@@ -8,7 +8,7 @@ import { transformFileTreeToExecutionStructure } from '../utils'
 
 export const RunButton = ({ onClick }: { onClick?: () => void }) => {
   const { compileFileStructure, isLoading } = useCompile()
-  const { setCompilationResult, fileTree } = useIDEStore()
+  const { setCompilationResult, fileTree, openTerminalTab } = useIDEStore()
 
   const handleClick = async () => {
     if (onClick) {
@@ -21,8 +21,8 @@ export const RunButton = ({ onClick }: { onClick?: () => void }) => {
       mainFile: executionStructure.mainFile!,
     })
 
-    console.log(compileResult)
     setCompilationResult(compileResult)
+    openTerminalTab()
   }
 
   return (

@@ -1,11 +1,7 @@
 import { TreeItem, TreeItemLabel } from '@/components/tree'
 import { cn } from '@/lib/utils'
-import { ItemInstance } from '@headless-tree/core'
 import { FileIcon, Lock } from 'lucide-react'
 import { FileSystemNode } from '@/core/ide/types'
-import { useIDEStore } from '@/core/ide/store/use-ide-store'
-import { getLanguageFromExtension } from '../../utils'
-import { Language } from '@/core/compiler/types'
 
 export const ExplorerFile = ({
   item,
@@ -13,34 +9,13 @@ export const ExplorerFile = ({
   isFileOpen,
   isFileLocked,
 }: {
-  item: ItemInstance<FileSystemNode>
+  item: any // ItemInstance<FileSystemNode>
   isActiveFile: boolean
   isFileOpen: boolean
   isFileLocked: boolean
 }) => {
-  const { openTab, setActiveFileId } = useIDEStore()
-
-  const handleFileClick = (event: React.MouseEvent, item: any) => {
-    if (!item.isFolder()) {
-      const fileData = item.getItemData()
-      const fileExtension = fileData.name.split('.').pop() || ''
-      const language = getLanguageFromExtension(fileExtension)
-
-      if (event.button === 1) {
-        event.preventDefault()
-        openTab({
-          id: crypto.randomUUID(),
-          fileId: item.getId(),
-          fileName: fileData.name,
-          language: language as Language,
-        })
-        setActiveFileId(item.getId())
-      }
-    }
-  }
-
   return (
-    <TreeItem key={item.getId()} item={item} onMouseDown={(e) => handleFileClick(e, item)}>
+    <TreeItem key={item.getId()} item={item}>
       <TreeItemLabel
         className={cn(
           'before:bg-background relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:-z-10',

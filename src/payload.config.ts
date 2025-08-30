@@ -15,6 +15,13 @@ import { Articles } from './collections/Articles'
 import { Feedbacks } from './collections/Feedbacks'
 import { SupportMessages } from './collections/SupportMessages'
 import { GamificationProfiles } from './collections/GamificationProfiles'
+import { Challenges } from './collections/Challenges'
+import { UserChallengeProgress } from './collections/UserChallengeProgress'
+import { ChallengeAccess } from './collections/ChallengeAccess'
+import { ChallengeEngagement } from './collections/ChallengeEngagement'
+import { ChallengeRating } from './collections/ChallengeRating'
+import { Exercises } from './collections/Exercises'
+import { UserSubmissions } from './collections/UserSubmissions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,7 +33,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Admins, Media, BlogPosts, Tutorials, Articles, Feedbacks, SupportMessages, GamificationProfiles],
+  collections: [Admins, Media, BlogPosts, Tutorials, Articles, Feedbacks, SupportMessages, GamificationProfiles, Challenges, UserChallengeProgress, ChallengeAccess, ChallengeEngagement, ChallengeRating, Exercises, UserSubmissions],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,

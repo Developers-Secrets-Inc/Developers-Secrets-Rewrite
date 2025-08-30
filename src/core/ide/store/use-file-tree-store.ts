@@ -7,8 +7,8 @@ export type FileTreeState = {
 
   setFileTree: (fileTree: FileSystemNode[]) => void
   updateNodeContent: (id: string, content: string) => void
-  addFile: (parentId: string, fileName: string) => void
-  addFolder: (parentId: string, folderName: string) => void
+  addFile: (parentId: string, fileName: string, autoOpen?: boolean) => string
+  addFolder: (parentId: string, folderName: string, autoOpen?: boolean) => void
   isNodeLocked: (id: string) => boolean
   isNodeOrParentLocked: (id: string) => boolean
   canModifyNode: (id: string) => boolean
@@ -93,24 +93,29 @@ export const createFileTreeSlice: StateCreator<FileTreeState> = (set, get) => ({
       ...state,
       fileTree: updateNodeInTree(state.fileTree, id, content),
     })),
-  addFile: (parentId, fileName) =>
-    set((state) => {
-      const fileExtension = fileName.split('.').pop() || ''
-      const language = getLanguageFromExtension(fileExtension)
+  addFile: (parentId, fileName, autoOpen = false) => {
+    const newFileId = crypto.randomUUID()
+    const fileExtension = fileName.split('.').pop() || ''
+    const language = getLanguageFromExtension(fileExtension)
 
-      const newFile: FileSystemNode = {
-        id: crypto.randomUUID(),
-        name: fileName,
-        type: 'file',
-        content: '',
-        language: language,
-      }
+    const newFile: FileSystemNode = {
+      id: newFileId,
+      name: fileName,
+      type: 'file',
+      content: '',
+      language: language,
+    }
+    
+    set((state) => {
       if (parentId === 'root') {
         return { fileTree: [...state.fileTree, newFile] }
       }
       return { fileTree: addNodeToTree(state.fileTree, parentId, newFile) }
-    }),
-  addFolder: (parentId, folderName) =>
+    })
+    
+    return newFileId
+  },
+  addFolder: (parentId, folderName, autoOpen = false) =>
     set((state) => {
       const newFolder: FileSystemNode = {
         id: crypto.randomUUID(),

@@ -2,17 +2,11 @@ import type { FileSystemNode } from '../types'
 import type { Language } from '../../compiler/types'
 import type { IDETab } from '../types'
 
-export interface Tab {
-  id: string
-  fileId: string
-  fileName: string
-  language: Language
-}
 
 export interface FileSystemState {
   fileTree: FileSystemNode[]
   activeFileId: string | null
-  openTabs: Tab[]
+  openTabs: IDETab[]
   editorContent: Record<string, string>
   lastModified: Date
 }

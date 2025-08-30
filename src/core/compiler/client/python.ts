@@ -125,7 +125,7 @@ export const compilePythonFileStructure = async (
 import sys
 sys.path.insert(0, '/')
 __file__ = '${mainFile.path}'
-exec('''${mainFileContent.replace(/'/g, "\\'").replace(/\\/g, '\\\\')}''')
+exec('''${mainFileContent.replace(/\\/g, '\\\\')}''')
 `)
     } else {
       // If no main file, execute the first Python file

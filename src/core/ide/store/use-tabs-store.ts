@@ -7,7 +7,7 @@ export type IDETabsState = {
 
   openTab: (tab: IDETab) => void
   closeTab: (tabId: string) => void
-  setActiveTab: (tabId: string) => void
+  setActiveTab: (tabId: string | null) => void
 
   replaceActiveTab: (tab: IDETab) => void
   closeAllTabs: () => void
@@ -23,8 +23,10 @@ export const createTabsSlice: StateCreator<IDETabsState> = (set) => ({
   openTab: (tab: IDETab) => set((state) => ({ openTabs: [...state.openTabs, tab] })),
   closeTab: (tabId: string) =>
     set((state) => ({ openTabs: state.openTabs.filter((tab) => tab.id !== tabId) })),
-  setActiveTab: (tabId: string) =>
-    set((state) => ({ activeTab: state.openTabs.find((tab) => tab.id === tabId) })),
+  setActiveTab: (tabId: string | null) =>
+    set((state) => ({ 
+      activeTab: tabId ? state.openTabs.find((tab) => tab.id === tabId) : null 
+    })),
   replaceActiveTab: (tab: IDETab) => set(() => ({ activeTab: tab })),
   closeAllTabs: () => set(() => ({ openTabs: [], activeTab: null })),
   setTabs: (tabs: IDETab[], activeId?: string) =>

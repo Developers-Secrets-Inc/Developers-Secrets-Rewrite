@@ -18,7 +18,7 @@ export const ChallengeLeft = ({ children, className, ...props }: React.Component
   return (
     <ResizablePanel defaultSize={50} minSize={40}>
       <div className={cn("relative flex flex-col h-full border rounded-md", className)} {...props}>
-        <div className="flex-1 min-h-0 overflow-y-auto p-8">{children}</div>
+        {children}
       </div>
     </ResizablePanel>
   )

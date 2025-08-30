@@ -22,7 +22,9 @@ export const OutputContent = () => {
   const { compilationResult, fileTree } = useIDEStore()
   const { compileFileStructure, isLoading } = useCompile()
   const [terminalHistory, setTerminalHistory] = useState<TerminalEntry[]>([])
+  const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [currentCommandInput, setCurrentCommandInput] = useState('')
+  const [currentHistoryIndex, setCurrentHistoryIndex] = useState(-1)
   const terminalEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -46,17 +48,51 @@ export const OutputContent = () => {
     inputRef.current?.focus()
   }, [terminalHistory])
 
+  
+  const handleNavigation = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const command = currentCommandInput.trim()
+    const commandHistoryLength = commandHistory.length
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (commandHistoryLength === 0) return
+
+      const newIndex = currentHistoryIndex === -1 
+        ? commandHistoryLength - 1 
+        : Math.max(0, currentHistoryIndex - 1)
+      
+      setCurrentHistoryIndex(newIndex)
+      setCurrentCommandInput(commandHistory[newIndex])
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (commandHistoryLength === 0 || currentHistoryIndex === -1) return
+
+      const newIndex = currentHistoryIndex < commandHistoryLength - 1 
+        ? currentHistoryIndex + 1 
+        : -1
+      
+      setCurrentHistoryIndex(newIndex)
+      setCurrentCommandInput(newIndex === -1 ? '' : commandHistory[newIndex])
+    }
+  }
+
   const handleCommandSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && currentCommandInput.trim()) {
       const command = currentCommandInput.trim()
       const [cmd, ...args] = command.split(' ')
 
+      // Ajouter à l'historique des commandes (stocké séparément)
+      setCommandHistory((prev) => [...prev, command])
+      
+      // Ajouter à l'affichage terminal
       setTerminalHistory((prev) => [...prev, { type: 'command', command }])
       setCurrentCommandInput('')
+      setCurrentHistoryIndex(-1)
 
       switch (cmd) {
         case 'clear':
           setTerminalHistory([])
+          setCurrentHistoryIndex(-1)
           break
         case 'run':
           setTerminalHistory((prev) => [
@@ -122,7 +158,10 @@ export const OutputContent = () => {
             type="text"
             value={currentCommandInput}
             onChange={(e) => setCurrentCommandInput(e.target.value)}
-            onKeyDown={handleCommandSubmit}
+            onKeyDown={(e) => {
+    handleNavigation(e)
+    handleCommandSubmit(e)
+  }}
             className="bg-transparent outline-none flex-1 font-mono text-sm"
             aria-label="Terminal command input"
             autoFocus

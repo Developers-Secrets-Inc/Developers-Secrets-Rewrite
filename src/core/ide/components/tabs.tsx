@@ -54,6 +54,29 @@ export const IDETabs = () => {
     }
   }
 
+  const handleTabClose = (tabId: string) => {
+    // Get the tab being closed
+    const tabToClose = openTabs.find((tab) => tab.id === tabId)
+    if (!tabToClose) return // Safety check
+    closeTab(tabId)
+    
+    // If this was the active tab, update the active file
+    if (activeTab?.id === tabId) {
+      // Find the next available tab
+      const remainingTabs = openTabs.filter((tab) => tab.id !== tabId)
+      if (remainingTabs.length > 0) {
+        // Set the first remaining tab as active
+        const nextActiveTab = remainingTabs[0]
+        setActiveTab(nextActiveTab.id)
+        setActiveFileId(nextActiveTab.fileId)
+      } else {
+        // No tabs left, clear everything
+        setActiveTab(null)
+        setActiveFileId(null)
+      }
+    }
+  }
+
   if (openTabs.length === 0) {
     return null
   }
@@ -67,7 +90,7 @@ export const IDETabs = () => {
             tab={tab}
             isActive={tab.id === activeTab?.id}
             onSelect={handleTabSelect}
-            onClose={closeTab}
+            onClose={handleTabClose}
           />
         ))}
       </div>

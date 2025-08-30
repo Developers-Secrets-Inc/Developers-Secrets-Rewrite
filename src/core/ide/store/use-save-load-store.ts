@@ -1,10 +1,7 @@
 import type { StateCreator } from 'zustand'
-import type { FileSystemState, SaveLoadPrimitive } from '../types/file-system-state'
-import type { FileSystemNode } from '../types'
-import type { Language } from '../../compiler/types'
-import { getLanguageFromExtension } from '../utils'
+import type { FileSystemState } from '../types/file-system-state'
+import { extractEditorContent, isEqual, restoreEditorContent } from '../utils/state-extractors'
 import { useIDEStore } from './use-ide-store'
-import { extractEditorContent, restoreEditorContent, isEqual } from '../utils/state-extractors'
 
 export type SaveLoadState = {
   currentState: FileSystemState | null
@@ -32,7 +29,7 @@ export const createSaveLoadSlice: StateCreator<SaveLoadState & SaveLoadActions> 
 
   exportCurrentState: () => {
     const { currentState, lastSavedState } = get()
-    
+
     if (!currentState) {
       // Build state from all slices if current state is not set
       const ideState = useIDEStore.getState()
@@ -41,47 +38,47 @@ export const createSaveLoadSlice: StateCreator<SaveLoadState & SaveLoadActions> 
         activeFileId: ideState.activeFileId,
         openTabs: ideState.openTabs || [],
         editorContent: extractEditorContent(ideState),
-        lastModified: new Date()
+        lastModified: new Date(),
       }
     }
-    
+
     return currentState
   },
 
   importState: (state: FileSystemState) => {
     // Restore state to all slices
     const ideState = useIDEStore.getState()
-    
+
     // Update file tree
     if (ideState.setFileTree) {
       ideState.setFileTree(state.fileTree)
     }
-    
+
     // Update active file
     if (ideState.setActiveFileId) {
       ideState.setActiveFileId(state.activeFileId)
     }
-    
+
     // Update tabs
-    if (ideState.setOpenTabs) {
-      ideState.setOpenTabs(state.openTabs)
+    if (ideState.setTabs) {
+      ideState.setTabs(state.openTabs, state.activeFileId as string | undefined)
     }
-    
+
     // Restore editor content
     restoreEditorContent(ideState, state.editorContent)
-    
-    set({ 
+
+    set({
       currentState: state,
       lastSavedState: state,
       lastSavedAt: new Date(),
-      isDirty: false
+      isDirty: false,
     })
   },
 
   updateCurrentState: (state: FileSystemState) => {
-    set({ 
+    set({
       currentState: state,
-      isDirty: !isEqual(state, get().lastSavedState)
+      isDirty: !isEqual(state, get().lastSavedState),
     })
   },
 
@@ -94,10 +91,10 @@ export const createSaveLoadSlice: StateCreator<SaveLoadState & SaveLoadActions> 
   markAsSaved: () => {
     const currentState = get().currentState
     if (currentState) {
-      set({ 
+      set({
         lastSavedState: currentState,
         lastSavedAt: new Date(),
-        isDirty: false
+        isDirty: false,
       })
     }
   },
@@ -115,7 +112,7 @@ export const createSaveLoadSlice: StateCreator<SaveLoadState & SaveLoadActions> 
       currentState: null,
       lastSavedState: null,
       lastSavedAt: null,
-      isDirty: false
+      isDirty: false,
     })
-  }
+  },
 })

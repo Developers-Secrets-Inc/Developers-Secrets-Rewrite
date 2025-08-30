@@ -1,1 +1,2 @@
 - On ne doit jamais utiliser de classes dans le projet, uniquement des fonctions et des objets. Les objets représentent des entités et ne doivent pas être des substitus de classes.
+- Tous les commentaires doivent être en anglais
